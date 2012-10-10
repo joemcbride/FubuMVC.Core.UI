@@ -31,6 +31,23 @@ namespace FubuMVC.Core.UI.Testing.Templates
         }
 
         [Test]
+        public void writing_flushes_so_that_templates_do_not_get_added_twice()
+        {
+            theTemplates.AddTemplate("1", "hello");
+            theTemplates.AddTemplate("2", "bye");
+
+            theTemplates.WriteAll().ToString().ShouldContain("hello");
+
+            theTemplates.AddTemplate("3", "laters");
+
+            var result = theTemplates.WriteAll().ToString();
+
+            result.ShouldContain("laters");
+            result.ShouldNotContain("hello");
+            result.ShouldNotContain("bye");
+        }
+
+        [Test]
         public void write_label()
         {
             theTemplates.LabelFor<ConventionTarget>(x => x.Name);

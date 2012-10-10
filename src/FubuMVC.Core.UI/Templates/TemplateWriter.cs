@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using FubuCore;
 using FubuCore.Reflection;
 using FubuMVC.Core.UI.Elements;
 using HtmlTags;
 using HtmlTags.Conventions;
+using System.Linq;
 
 namespace FubuMVC.Core.UI.Templates
 {
@@ -25,7 +27,7 @@ namespace FubuMVC.Core.UI.Templates
         private readonly ITagRequestActivator[] _activators;
         private readonly Lazy<ITagGenerator<ElementRequest>> _elements;
         private readonly HtmlConventionLibrary _library;
-        private readonly HtmlTag _tag = new HtmlTag("div").Hide().AddClass("templates").Render(false);
+        private readonly IList<HtmlTag> _tags = new List<HtmlTag>();
 
         public TemplateWriter(ActiveProfile profile, HtmlConventionLibrary library, IElementNamingConvention naming,
                               IServiceLocator services)
@@ -41,8 +43,9 @@ namespace FubuMVC.Core.UI.Templates
 
         public void AddTemplate(string subject, HtmlTag tag)
         {
-            _tag.Render(true);
-            _tag.Add("div").Attr("data-subject", subject).Append(tag);
+            var subjectTag = new HtmlTag("div").Attr("data-subject", subject).Append(tag);
+            _tags.Add(subjectTag);
+            
         }
 
         public void AddTemplate(string subject, string html)
@@ -77,7 +80,17 @@ namespace FubuMVC.Core.UI.Templates
 
         public HtmlTag WriteAll()
         {
-            return _tag;
+            if (!_tags.Any())
+            {
+                return new HtmlTag("div").Render(false);
+            }
+
+            var tag = new HtmlTag("div").AddClass("templates").Hide();
+            tag.Append(_tags);
+
+            _tags.Clear();
+
+            return tag;
         }
 
         #endregion
