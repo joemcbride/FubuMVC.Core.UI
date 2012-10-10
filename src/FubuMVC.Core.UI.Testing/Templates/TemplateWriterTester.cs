@@ -25,6 +25,12 @@ namespace FubuMVC.Core.UI.Testing.Templates
         }
 
         [Test]
+        public void do_not_write_anything_if_there_are_no_templates()
+        {
+            theTemplates.WriteAll().WillBeRendered().ShouldBeFalse();
+        }
+
+        [Test]
         public void write_label()
         {
             theTemplates.LabelFor<ConventionTarget>(x => x.Name);

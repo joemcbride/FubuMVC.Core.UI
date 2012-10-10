@@ -25,7 +25,7 @@ namespace FubuMVC.Core.UI.Templates
         private readonly ITagRequestActivator[] _activators;
         private readonly Lazy<ITagGenerator<ElementRequest>> _elements;
         private readonly HtmlConventionLibrary _library;
-        private readonly HtmlTag _tag = new HtmlTag("div").Hide().AddClass("templates");
+        private readonly HtmlTag _tag = new HtmlTag("div").Hide().AddClass("templates").Render(false);
 
         public TemplateWriter(ActiveProfile profile, HtmlConventionLibrary library, IElementNamingConvention naming,
                               IServiceLocator services)
@@ -41,6 +41,7 @@ namespace FubuMVC.Core.UI.Templates
 
         public void AddTemplate(string subject, HtmlTag tag)
         {
+            _tag.Render(true);
             _tag.Add("div").Attr("data-subject", subject).Append(tag);
         }
 
