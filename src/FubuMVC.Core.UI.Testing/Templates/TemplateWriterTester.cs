@@ -20,17 +20,35 @@ namespace FubuMVC.Core.UI.Testing.Templates
         {
             var library = new DefaultHtmlConventions().Library;
 
-            theTemplates = new TemplateWriter(library, new DefaultElementNamingConvention(),
+            theTemplates = new TemplateWriter(new ActiveProfile(), library, new DefaultElementNamingConvention(),
                                               new InMemoryServiceLocator());
         }
 
         [Test]
-        public void add_a_simple_template_directory_and_write()
+        public void write_label()
         {
-            theTemplates.AddTemplate("subject1", new HtmlTag("span").MustacheText("foo"));
+            theTemplates.LabelFor<ConventionTarget>(x => x.Name);
 
-            var templates = theTemplates.WriteAll();
+            theTemplates.WriteAll().FirstChild().ToString()
+                .ShouldEqual("<div data-subject=\"label-Name\"><label for=\"Name\">Name</label></div>");
+        }
 
+        [Test]
+        public void write_display()
+        {
+            theTemplates.DisplayFor<ConventionTarget>(x => x.Name);
+
+            theTemplates.WriteAll().FirstChild().ToString()
+                .ShouldEqual("<div data-subject=\"display-Name\"><span data-fld=\"Name\">{{Name}}</span></div>");
+        }
+
+        [Test]
+        public void write_input()
+        {
+            theTemplates.InputFor<ConventionTarget>(x => x.Name);
+
+            theTemplates.WriteAll().FirstChild().ToString()
+                .ShouldEqual("<div data-subject=\"editor-Name\"><input type=\"text\" name=\"Name\" value=\"{{Name}}\" data-fld=\"Name\" /></div>");
         }
     }
 
@@ -45,7 +63,7 @@ namespace FubuMVC.Core.UI.Testing.Templates
         {
             var library = new DefaultHtmlConventions().Library;
 
-            theTemplates = new TemplateWriter(library, new DefaultElementNamingConvention(),
+            theTemplates = new TemplateWriter(new ActiveProfile(), library, new DefaultElementNamingConvention(),
                                               new InMemoryServiceLocator());
 
             theTemplates.AddTemplate("foo", new HtmlTag("span").MustacheText("foo"));
