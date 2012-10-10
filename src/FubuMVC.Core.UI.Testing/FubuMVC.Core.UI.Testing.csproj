@@ -158,6 +158,7 @@
     <Compile Include="Security\FieldAccessServiceIntegratedTester.cs" />
     <Compile Include="SelfHostHarness.cs" />
     <Compile Include="ServiceLocatorTagRequestActivatorTester.cs" />
+    <Compile Include="Templates\TemplateWriterTester.cs" />
     <Compile Include="templates_html_creation_specs.cs" />
     <Compile Include="UIServiceRegistry_registration_spec.cs" />
   </ItemGroup>

@@ -2,20 +2,19 @@ using FubuMVC.Core.Runtime;
 
 namespace FubuMVC.Core.UI.Elements
 {
-    public class ElementRequestActivator : TagRequestActivator<ElementRequest> 
+    public class ElementRequestActivator : ElementIdActivator
     {
         private readonly IFubuRequest _request;
-        private readonly IElementNamingConvention _naming;
 
         public ElementRequestActivator(IFubuRequest request, IElementNamingConvention naming)
+            : base(naming)
         {
             _request = request;
-            _naming = naming;
         }
 
         public override void Activate(ElementRequest request)
         {
-            request.ElementId = _naming.GetName(request.HolderType(), request.Accessor);
+            base.Activate(request);
             if (request.Model == null)
             {
                 request.Model = _request.Get(request.HolderType());

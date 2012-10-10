@@ -86,6 +86,7 @@
     <Compile Include="Elements\DotNotationElementNamingConvention.cs" />
     <Compile Include="Elements\ElementConstants.cs" />
     <Compile Include="Elements\ElementGenerator.cs" />
+    <Compile Include="Elements\ElementIdActivator.cs" />
     <Compile Include="Elements\ElementRequest.cs" />
     <Compile Include="Elements\ElementRequestActivator.cs" />
     <Compile Include="Elements\IElementBuilder.cs" />
@@ -120,6 +121,7 @@
     <Compile Include="ShowEditFieldExpressions.cs" />
     <Compile Include="Elements\Builders\TemplateSpanBuilder.cs" />
     <Compile Include="Elements\Builders\TemplateTextboxBuilder.cs" />
+    <Compile Include="Templates\TemplateWriter.cs" />
     <Compile Include="UIServiceRegistry.cs" />
     <Compile Include="ViewEngine\HtmlDocumentViewFacility.cs" />
     <Compile Include="ViewEngine\HtmlDocumentViewFactory.cs" />

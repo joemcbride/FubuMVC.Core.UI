@@ -39,8 +39,6 @@ namespace FubuMVC.Core.UI.Elements
             return new ElementGenerator<T>(tags, new InMemoryFubuRequest());
         } 
 
-        #region IElementGenerator<T> Members
-
         public HtmlTag LabelFor(Expression<Func<T, object>> expression, string profile = null, T model = null)
         {
             return build(expression, ElementConstants.Label, profile, model);
@@ -61,8 +59,6 @@ namespace FubuMVC.Core.UI.Elements
             get { return _model.Value; }
             set { _model = new Lazy<T>(() => value); }
         }
-
-        #endregion
 
         public ElementRequest GetRequest(Expression<Func<T, object>> expression, T model = null)
         {
