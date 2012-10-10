@@ -10,12 +10,14 @@ namespace FubuMVC.Core.UI
     public class HtmlConventionRegistry : ProfileExpression, IFubuRegistryExtension
     {
         private readonly HtmlConventionLibrary _library;
+        private readonly Lazy<ProfileExpression> _templates; 
 
         public HtmlConventionRegistry() : this(new HtmlConventionLibrary()){}
 
         private HtmlConventionRegistry(HtmlConventionLibrary library) : base(library, TagConstants.Default)
         {
             _library = library;
+            _templates = new Lazy<ProfileExpression>(() => new ProfileExpression(_library, ElementConstants.Templates));
         }
 
         public HtmlConventionLibrary Library
@@ -27,6 +29,11 @@ namespace FubuMVC.Core.UI
         {
             var expression = new ProfileExpression(_library, profileName);
             configure(expression);
+        }
+
+        public ProfileExpression Templates
+        {
+            get { return _templates.Value; }
         }
 
         void IFubuRegistryExtension.Configure(FubuRegistry registry)

@@ -67,6 +67,7 @@
     </Compile>
     <Compile Include="AntiForgeryTokenFubuPageExtensions.cs" />
     <Compile Include="AuthorizationOnPageExtensions.cs" />
+    <Compile Include="Elements\Builders\DataFldModifier.cs" />
     <Compile Include="DefaultHtmlConventions.cs" />
     <Compile Include="ElementCategoryExpression.cs" />
     <Compile Include="Elements\AccessorDef.cs" />
@@ -117,6 +118,8 @@
     <Compile Include="Security\IFieldAccessService.cs" />
     <Compile Include="ServiceLocatorTagRequestActivator.cs" />
     <Compile Include="ShowEditFieldExpressions.cs" />
+    <Compile Include="Elements\Builders\TemplateSpanBuilder.cs" />
+    <Compile Include="Elements\Builders\TemplateTextboxBuilder.cs" />
     <Compile Include="UIServiceRegistry.cs" />
     <Compile Include="ViewEngine\HtmlDocumentViewFacility.cs" />
     <Compile Include="ViewEngine\HtmlDocumentViewFactory.cs" />

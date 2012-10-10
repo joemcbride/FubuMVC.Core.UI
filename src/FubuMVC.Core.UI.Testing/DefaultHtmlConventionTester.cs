@@ -9,15 +9,12 @@ namespace FubuMVC.Core.UI.Testing
     public class DefaultHtmlConventionTester
     {
         private ConventionTarget theTarget;
-        private HtmlConventionRegistry theRegistry;
         private ElementGenerator<ConventionTarget> theGenerator;
 
         [SetUp]
         public void SetUp()
         {
             theTarget = new ConventionTarget();
-            theRegistry = new HtmlConventionRegistry();
-
             theGenerator = HtmlElementScenario<ConventionTarget>.For(x =>
             {
                 x.Model = theTarget;

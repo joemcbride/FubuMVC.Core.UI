@@ -14,6 +14,12 @@ namespace FubuMVC.Core.UI
             Displays.Builder<SpanDisplayBuilder>();
 
             Labels.Builder<DefaultLabelBuilder>();
+
+            Templates.Displays.Builder<TemplateSpanBuilder>();
+            Templates.Editors.Builder<TemplateTextboxBuilder>();
+
+            Templates.Displays.Always.ModifyWith<DataFldModifier>();
+            Templates.Editors.Always.ModifyWith<DataFldModifier>();
         }
     }
 }

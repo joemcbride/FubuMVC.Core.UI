@@ -47,6 +47,7 @@ namespace FubuMVC.Core.UI
             return tag.Attr("name", name);
         }
 
+        // TODO - get this into HtmlTAgs itself
         public static HtmlTag Value(this HtmlTag tag, string value)
         {
             return tag.Attr("value", value);
