@@ -2,8 +2,6 @@
 using System.Linq.Expressions;
 using FubuCore;
 using FubuCore.Reflection;
-using FubuCore.Util;
-using FubuMVC.Core.Runtime;
 using FubuMVC.Core.UI.Elements;
 using HtmlTags;
 using HtmlTags.Conventions;
@@ -11,21 +9,35 @@ using HtmlTags.Conventions;
 namespace FubuMVC.Core.UI.Templates
 {
     // TODO -- add a feature to add partials as templates?
-    public class TemplateWriter
+    public interface ITemplateWriter
     {
-        private readonly HtmlConventionLibrary _library;
-        private readonly ITagRequestActivator[] _activators;
-        private readonly HtmlTag _tag = new HtmlTag("div").Hide().AddClass("templates");
-        private readonly TagGeneratorFactory _factory;
-        private readonly Lazy<ITagGenerator<ElementRequest>> _elements; 
+        void AddTemplate(string subject, HtmlTag tag);
+        void AddTemplate(string subject, string html);
+        void AddElement(Accessor accessor, string category);
+        void DisplayFor<T>(Expression<Func<T, object>> property);
+        void InputFor<T>(Expression<Func<T, object>> property);
+        void LabelFor<T>(Expression<Func<T, object>> property) where T : class;
+        HtmlTag WriteAll();
+    }
 
-        public TemplateWriter(ActiveProfile profile, HtmlConventionLibrary library, IElementNamingConvention naming, IServiceLocator services)
+    public class TemplateWriter : ITemplateWriter
+    {
+        private readonly ITagRequestActivator[] _activators;
+        private readonly Lazy<ITagGenerator<ElementRequest>> _elements;
+        private readonly HtmlConventionLibrary _library;
+        private readonly HtmlTag _tag = new HtmlTag("div").Hide().AddClass("templates");
+
+        public TemplateWriter(ActiveProfile profile, HtmlConventionLibrary library, IElementNamingConvention naming,
+                              IServiceLocator services)
         {
             _library = library;
-            _activators = new ITagRequestActivator[] {new ServiceLocatorTagRequestActivator(services), new ElementIdActivator(naming) };
-            _factory = new TagGeneratorFactory(profile, library, _activators);
-            _elements = new Lazy<ITagGenerator<ElementRequest>>(() => _factory.GeneratorFor<ElementRequest>());
+            _activators = new ITagRequestActivator[]
+            {new ServiceLocatorTagRequestActivator(services), new ElementIdActivator(naming)};
+            var factory = new TagGeneratorFactory(profile, library, _activators);
+            _elements = new Lazy<ITagGenerator<ElementRequest>>(factory.GeneratorFor<ElementRequest>);
         }
+
+        #region ITemplateWriter Members
 
         public void AddTemplate(string subject, HtmlTag tag)
         {
@@ -40,10 +52,10 @@ namespace FubuMVC.Core.UI.Templates
         public void AddElement(Accessor accessor, string category)
         {
             var request = new ElementRequest(accessor);
-            var tag = _elements.Value.Build(request, category: category,
-                                            profile: ElementConstants.Templates);
+            HtmlTag tag = _elements.Value.Build(request, category: category,
+                                                profile: ElementConstants.Templates);
 
-            var subject = "{0}-{1}".ToFormat(category.ToLower(), request.ElementId);
+            string subject = "{0}-{1}".ToFormat(category.ToLower(), request.ElementId);
             AddTemplate(subject, tag);
         }
 
@@ -66,5 +78,7 @@ namespace FubuMVC.Core.UI.Templates
         {
             return _tag;
         }
+
+        #endregion
     }
 }

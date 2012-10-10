@@ -2,6 +2,7 @@ using Bottles;
 using FubuMVC.Core.Registration;
 using FubuMVC.Core.UI.Elements;
 using FubuMVC.Core.UI.Security;
+using FubuMVC.Core.UI.Templates;
 using HtmlTags.Conventions;
 
 namespace FubuMVC.Core.UI
@@ -29,6 +30,8 @@ namespace FubuMVC.Core.UI
             AddService<ITagRequestActivator, ServiceLocatorTagRequestActivator>();
 
             SetServiceIfNone<ITagGeneratorFactory, TagGeneratorFactory>();
+
+            SetServiceIfNone<ITemplateWriter, TemplateWriter>();
         }
     }
 }
