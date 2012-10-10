@@ -51,5 +51,25 @@ namespace FubuMVC.Core.UI
         {
             return tag.Attr("value", value);
         }
+
+        public static string Mustached(this string key)
+        {
+            return "{{" + key + "}}";
+        }
+
+        public static HtmlTag MustacheAttr(this HtmlTag tag, string attributeName, string key)
+        {
+            return tag.Attr(attributeName, key.Mustached());
+        }
+
+        public static HtmlTag MustacheValue(this HtmlTag tag, string key)
+        {
+            return tag.Value(key.Mustached());
+        }
+
+        public static HtmlTag MustacheText(this HtmlTag tag, string key)
+        {
+            return tag.Text(key.Mustached());
+        }
     }
 }

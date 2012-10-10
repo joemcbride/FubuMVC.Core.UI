@@ -42,6 +42,33 @@ namespace FubuMVC.Core.UI.Testing
             new TagHolder(tag).ForChild("div").ShouldBeTheSameAs(div);
         }
 
+        [Test]
+        public void mustache_attr()
+        {
+            var tag = new HtmlTag("a");
+            tag.MustacheAttr("href", "url");
+
+            tag.ToString().ShouldEqual("<a href=\"{{url}}\"></a>");
+        }
+
+        [Test]
+        public void mustache_value()
+        {
+            var tag = new TextboxTag();
+            tag.MustacheValue("prop");
+
+            tag.ToString().ShouldEqual("<input type=\"text\" value=\"{{prop}}\" />");
+        }
+
+        [Test]
+        public void mustache_text()
+        {
+            var tag = new HtmlTag("span");
+            tag.MustacheText("prop");
+
+            tag.ToString().ShouldEqual("<span>{{prop}}</span>");
+        }
+
         public class TagHolder : ITagSource
         {
             private readonly HtmlTag _inner;
