@@ -39,6 +39,11 @@ namespace FubuMVC.Core.UI.Templates
             _elements = new Lazy<ITagGenerator<ElementRequest>>(factory.GeneratorFor<ElementRequest>);
         }
 
+        public static string SubjectFor(Accessor accessor, string category)
+        {
+            return "{0}-{1}-{2}".ToFormat(category.ToLower(), accessor.OwnerType.Name, accessor.Name);
+        }
+
         #region ITemplateWriter Members
 
         public void AddTemplate(string subject, HtmlTag tag)
@@ -59,7 +64,7 @@ namespace FubuMVC.Core.UI.Templates
             HtmlTag tag = _elements.Value.Build(request, category: category,
                                                 profile: ElementConstants.Templates);
 
-            string subject = "{0}-{1}".ToFormat(category.ToLower(), request.ElementId);
+            string subject = SubjectFor(accessor, category);
             AddTemplate(subject, tag);
         }
 

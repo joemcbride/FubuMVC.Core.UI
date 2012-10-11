@@ -53,7 +53,7 @@ namespace FubuMVC.Core.UI.Testing.Templates
             theTemplates.LabelFor<ConventionTarget>(x => x.Name);
 
             theTemplates.WriteAll().FirstChild().ToString()
-                .ShouldEqual("<div data-subject=\"label-Name\"><label for=\"Name\">Name</label></div>");
+                .ShouldEqual("<div data-subject=\"label-ConventionTarget-Name\"><label for=\"Name\">Name</label></div>");
         }
 
         [Test]
@@ -62,7 +62,7 @@ namespace FubuMVC.Core.UI.Testing.Templates
             theTemplates.DisplayFor<ConventionTarget>(x => x.Name);
 
             theTemplates.WriteAll().FirstChild().ToString()
-                .ShouldEqual("<div data-subject=\"display-Name\"><span data-fld=\"Name\">{{Name}}</span></div>");
+                .ShouldEqual("<div data-subject=\"display-ConventionTarget-Name\"><span data-fld=\"Name\">{{Name}}</span></div>");
         }
 
         [Test]
@@ -71,7 +71,7 @@ namespace FubuMVC.Core.UI.Testing.Templates
             theTemplates.InputFor<ConventionTarget>(x => x.Name);
 
             theTemplates.WriteAll().FirstChild().ToString()
-                .ShouldEqual("<div data-subject=\"editor-Name\"><input type=\"text\" name=\"Name\" value=\"{{Name}}\" data-fld=\"Name\" /></div>");
+                .ShouldEqual("<div data-subject=\"editor-ConventionTarget-Name\"><input type=\"text\" name=\"Name\" value=\"{{Name}}\" data-fld=\"Name\" /></div>");
         }
     }
 
