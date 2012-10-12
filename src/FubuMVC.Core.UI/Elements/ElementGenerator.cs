@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using FubuCore.Reflection;
 using FubuMVC.Core.Runtime;
+using FubuMVC.Core.UI.Forms;
 using HtmlTags;
 using HtmlTags.Conventions;
 
@@ -72,6 +73,28 @@ namespace FubuMVC.Core.UI.Elements
         {
             ElementRequest request = GetRequest(expression, model);
             return _tags.Build(request, category, profile);
+        }
+
+        private HtmlTag build(ElementRequest request, string category, string profile = null, T model = null)
+        {
+            request.Model = model ?? Model;
+            return _tags.Build(request, category, profile: profile);
+        }
+
+        // Below methods are tested through the IFubuPage.Show/Edit method tests
+        public HtmlTag LabelFor(ElementRequest request, string profile = null, T model = null)
+        {
+            return build(request, ElementConstants.Label, profile, model);
+        }
+
+        public HtmlTag InputFor(ElementRequest request, string profile = null, T model = null)
+        {
+            return build(request, ElementConstants.Editor, profile, model);
+        }
+
+        public HtmlTag DisplayFor(ElementRequest request, string profile = null, T model = null)
+        {
+            return build(request, ElementConstants.Display, profile, model);
         }
     }
 }

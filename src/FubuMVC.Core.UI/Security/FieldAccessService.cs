@@ -12,14 +12,12 @@ namespace FubuMVC.Core.UI.Security
     {
         private readonly IFieldAccessRightsExecutor _accessRightsExecutor;
         private readonly ITypeResolver _types;
-        private readonly IServiceLocator _services;
         private readonly List<IFieldAccessRule> _rules = new List<IFieldAccessRule>();
 
-        public FieldAccessService(IFieldAccessRightsExecutor accessRightsExecutor, IEnumerable<IFieldAccessRule> rules, ITypeResolver types, IServiceLocator services)
+        public FieldAccessService(IFieldAccessRightsExecutor accessRightsExecutor, IEnumerable<IFieldAccessRule> rules, ITypeResolver types)
         {
             _accessRightsExecutor = accessRightsExecutor;
             _types = types;
-            _services = services;
             _rules.AddRange(rules);
         }
 

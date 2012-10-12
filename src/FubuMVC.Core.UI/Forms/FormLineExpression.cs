@@ -1,11 +1,22 @@
 
+using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
+using System.Web;
+using FubuLocalization;
+using FubuMVC.Core.Security;
+using FubuMVC.Core.UI.Elements;
+using FubuMVC.Core.UI.Security;
+using HtmlTags;
+using HtmlTags.Conventions;
+using FubuCore.Reflection;
+
 namespace FubuMVC.Core.UI.Forms
 {
-    /*
     public class FormLineExpression<T> : ITagSource, IHtmlString where T : class
     {
-        private readonly ITagGenerator<T> _tags;
-        private readonly ILabelAndFieldLayout _layout;
+        private readonly IElementGenerator<T> _tags;
+        private readonly IFieldChrome _chrome;
         private bool _isVisible = true;
         private readonly ElementRequest _request;
         private AccessRight _editable = AccessRight.ReadOnly;
@@ -13,28 +24,25 @@ namespace FubuMVC.Core.UI.Forms
 
         private readonly HashSet<string> _groupByCssClasses =
             new HashSet<string>(StringComparer.InvariantCultureIgnoreCase);
-        private readonly IList<Action<ILabelAndFieldLayout, ElementRequest>> _alterations 
-            = new List<Action<ILabelAndFieldLayout, ElementRequest>>();
+        private readonly IList<Action<IFieldChrome, ElementRequest>> _alterations 
+            = new List<Action<IFieldChrome, ElementRequest>>();
 
 
 
 
-        public FormLineExpression(ITagGenerator<T> tags, ILabelAndFieldLayout layout,
-                                  Expression<Func<T, object>> expression)
-            : this(tags, layout, tags.GetRequest(expression))
+        public FormLineExpression(IFieldChrome chrome, IElementGenerator<T> tags, Expression<Func<T, object>> expression)
+            : this(chrome, tags, new ElementRequest(expression.ToAccessor()))
         {
 
         }
 
-        public FormLineExpression(ITagGenerator<T> tags,
-            ILabelAndFieldLayout layout,
-            ElementRequest request)
+        public FormLineExpression(IFieldChrome chrome, IElementGenerator<T> tags, ElementRequest request)
         {
             _tags = tags;
-            _layout = layout;
+            _chrome = chrome;
             _request = request;
 
-            _layout.LabelTag = tags.LabelFor(request);
+            _chrome.LabelTag = tags.LabelFor(request);
 
             AlterLayout(x => GroupByCssClasses.Each(c =>
             {
@@ -52,7 +60,7 @@ namespace FubuMVC.Core.UI.Forms
 
         public FormLineExpression<T> AlterLabel(Action<HtmlTag> alter)
         {
-            alter(_layout.LabelTag);
+            alter(_chrome.LabelTag);
             return this;
         }
 
@@ -67,12 +75,12 @@ namespace FubuMVC.Core.UI.Forms
             return AlterLayout((l, r) => alter(l.BodyTag));
         }
 
-        public FormLineExpression<T> AlterLayout(Action<ILabelAndFieldLayout> alter)
+        public FormLineExpression<T> AlterLayout(Action<IFieldChrome> alter)
         {
             return AlterLayout((l, r) => alter(l));
         }
 
-        public FormLineExpression<T> AlterLayout(Action<ILabelAndFieldLayout, ElementRequest> alter)
+        public FormLineExpression<T> AlterLayout(Action<IFieldChrome, ElementRequest> alter)
         {
             _alterations.Add(alter);
 
@@ -81,7 +89,7 @@ namespace FubuMVC.Core.UI.Forms
 
         public FormLineExpression<T> Label(HtmlTag tag)
         {
-            _layout.LabelTag = tag;
+            _chrome.LabelTag = tag;
             return this;
         }
 
@@ -121,7 +129,7 @@ namespace FubuMVC.Core.UI.Forms
 
         public FormLineExpression<T> LabelId(string id)
         {
-            _layout.LabelTag.Id(id);
+            _chrome.LabelTag.Id(id);
             return this;
         }
 
@@ -139,13 +147,13 @@ namespace FubuMVC.Core.UI.Forms
         {
             if(isEditable())
             {
-                _layout.BodyTag = _tags.InputFor(_request);
+                _chrome.BodyTag = _tags.InputFor(_request);
             }
             else
             {
-                _layout.BodyTag = _tags.DisplayFor(_request);
+                _chrome.BodyTag = _tags.DisplayFor(_request);
             }
-            _alterations.Each(a => a(_layout, _request));
+            _alterations.Each(a => a(_chrome, _request));
         }
 
         private bool isEditable()
@@ -159,7 +167,7 @@ namespace FubuMVC.Core.UI.Forms
 
             createBodyTag();
 
-            return _layout.Render();
+            return _chrome.Render();
         }
 
         public string ToHtmlString()
@@ -196,20 +204,19 @@ namespace FubuMVC.Core.UI.Forms
             return this;
         }
 
-        public FormLineExpression<T> NoAutoComplete()
-        {
-            AlterBody(tag => tag.NoAutoComplete());
-            return this;
-        }
-
         IEnumerable<HtmlTag> ITagSource.AllTags()
         {
             if (!isVisible()) return new HtmlTag[0];
 
             createBodyTag();
 
-            return _layout.AllTags();
+            return _chrome.AllTags();
+        }
+
+        public FormLineExpression<T> NoAutoComplete()
+        {
+            AlterBody(x => x.Attr("autocomplete", "off"));
+            return this;
         }
     }
-     * */
 }

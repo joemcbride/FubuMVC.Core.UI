@@ -3,13 +3,13 @@ using HtmlTags;
 
 namespace FubuMVC.Core.UI.Forms
 {
-    public class DefinitionListLabelAndField : ILabelAndFieldLayout
+    public class DefinitionListFieldChrome : IFieldChrome
     {
         private readonly HtmlTag _dt = new HtmlTag("dt");
         private readonly HtmlTag _dd = new HtmlTag("dd");
         private readonly HtmlTag _bodyHolder;
 
-        public DefinitionListLabelAndField()
+        public DefinitionListFieldChrome()
         {
             _bodyHolder = _dd;
         }

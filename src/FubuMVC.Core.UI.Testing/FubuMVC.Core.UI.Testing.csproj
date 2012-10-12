@@ -32,37 +32,37 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Bottles">
-      <HintPath>..\packages\Bottles.0.9.1.370\lib\Bottles.dll</HintPath>
+      <HintPath>..\packages\Bottles.0.9.1.371\lib\Bottles.dll</HintPath>
     </Reference>
     <Reference Include="FubuCore">
       <HintPath>..\packages\FubuCore.0.9.9.182\lib\FubuCore.dll</HintPath>
     </Reference>
     <Reference Include="FubuLocalization">
-      <HintPath>..\packages\FubuLocalization.0.9.5.80\lib\FubuLocalization.dll</HintPath>
+      <HintPath>..\packages\FubuLocalization.0.9.5.83\lib\FubuLocalization.dll</HintPath>
     </Reference>
     <Reference Include="FubuMVC.Core">
-      <HintPath>..\packages\FubuMVC.Core.0.9.8.1201\lib\net40\FubuMVC.Core.dll</HintPath>
+      <HintPath>..\packages\FubuMVC.Core.0.9.8.1210\lib\net40\FubuMVC.Core.dll</HintPath>
     </Reference>
     <Reference Include="FubuMVC.Core.Assets">
-      <HintPath>..\packages\FubuMVC.Core.Assets.0.9.9.7\lib\net40\FubuMVC.Core.Assets.dll</HintPath>
+      <HintPath>..\packages\FubuMVC.Core.Assets.0.9.9.9\lib\net40\FubuMVC.Core.Assets.dll</HintPath>
     </Reference>
     <Reference Include="FubuMVC.Core.View">
-      <HintPath>..\packages\FubuMVC.Core.View.0.9.9.7\lib\net40\FubuMVC.Core.View.dll</HintPath>
+      <HintPath>..\packages\FubuMVC.Core.View.0.9.9.9\lib\net40\FubuMVC.Core.View.dll</HintPath>
     </Reference>
     <Reference Include="FubuMVC.SelfHost">
-      <HintPath>..\packages\FubuMVC.SelfHost.0.9.8.1201\lib\net40\FubuMVC.SelfHost.dll</HintPath>
+      <HintPath>..\packages\FubuMVC.SelfHost.0.9.8.1210\lib\net40\FubuMVC.SelfHost.dll</HintPath>
     </Reference>
     <Reference Include="FubuMVC.StructureMap">
-      <HintPath>..\packages\FubuMVC.StructureMap.0.9.8.1201\lib\net40\FubuMVC.StructureMap.dll</HintPath>
+      <HintPath>..\packages\FubuMVC.StructureMap.0.9.8.1210\lib\net40\FubuMVC.StructureMap.dll</HintPath>
     </Reference>
     <Reference Include="FubuMVC.TestingHarness">
-      <HintPath>..\packages\FubuMVC.TestingHarness.0.9.8.1201\lib\net40\FubuMVC.TestingHarness.dll</HintPath>
+      <HintPath>..\packages\FubuMVC.TestingHarness.0.9.8.1210\lib\net40\FubuMVC.TestingHarness.dll</HintPath>
     </Reference>
     <Reference Include="FubuTestingSupport">
       <HintPath>..\packages\FubuTestingSupport.0.9.9.182\lib\FubuTestingSupport.dll</HintPath>
     </Reference>
     <Reference Include="HtmlTags">
-      <HintPath>..\packages\HtmlTags.1.1.0.117\lib\4.0\HtmlTags.dll</HintPath>
+      <HintPath>..\packages\HtmlTags.1.1.0.118\lib\4.0\HtmlTags.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.4.5.9\lib\net40\Newtonsoft.Json.dll</HintPath>
@@ -134,8 +134,9 @@
     <Compile Include="Elements\ElementGeneratorTester.cs" />
     <Compile Include="Elements\ElementRequestActivatorTester.cs" />
     <Compile Include="Elements\ElementRequestTester.cs" />
-    <Compile Include="Forms\DefinitionListLabelAndFieldTester.cs" />
+    <Compile Include="Forms\DefinitionListFieldChromeTester.cs" />
     <Compile Include="Forms\FormForExpressionTester.cs" />
+    <Compile Include="Forms\FormLineExpressionTester.cs" />
     <Compile Include="Forms\FubuPageExtensionsTester.cs" />
     <Compile Include="FubuPageExtensionsTester.cs" />
     <Compile Include="HtmlConventionRegistryTester.cs" />
@@ -149,6 +150,7 @@
     <Compile Include="Integration\ElementConventions_with_Profiles_Tester.cs" />
     <Compile Include="Integration\FubuPageExtensions_FullStack_Tester.cs" />
     <Compile Include="Integration\HtmlDocumentViewEngineIntegrationTester.cs" />
+    <Compile Include="Integration\ShowEditExpressions_integration_Tester.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scenarios\HtmlElementScenarioTester.cs" />
     <Compile Include="Security\AccessRightTester.cs" />

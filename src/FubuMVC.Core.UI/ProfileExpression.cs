@@ -1,4 +1,5 @@
 using FubuMVC.Core.UI.Elements;
+using FubuMVC.Core.UI.Forms;
 using HtmlTags.Conventions;
 
 namespace FubuMVC.Core.UI
@@ -52,5 +53,9 @@ namespace FubuMVC.Core.UI
         //{
             
         //}
+        public void FieldChrome<T>() where T : IFieldChrome, new()
+        {
+            _library.RegisterService<IFieldChrome, T>(_profileName);
+        }
     }
 }

@@ -1,5 +1,7 @@
-﻿using FubuMVC.Core.UI.ViewEngine;
+﻿using FubuMVC.Core.UI.Forms;
+using FubuMVC.Core.UI.ViewEngine;
 using FubuMVC.Core.View;
+using HtmlTags.Conventions;
 
 namespace FubuMVC.Core.UI
 {
@@ -10,6 +12,10 @@ namespace FubuMVC.Core.UI
             registry.Services<UIServiceRegistry>();
 
             registry.ViewFacility(new HtmlDocumentViewFacility());
+
+            registry.AlterSettings<HtmlConventionLibrary>(x => {
+                x.RegisterService<IFieldChrome, DefinitionListFieldChrome>();
+            });
         }
     }
 }

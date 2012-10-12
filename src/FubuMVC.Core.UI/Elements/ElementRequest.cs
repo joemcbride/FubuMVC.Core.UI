@@ -46,7 +46,7 @@ namespace FubuMVC.Core.UI.Elements
             {
                 if (!_hasFetched)
                 {
-                    _rawValue = Accessor.GetValue(Model);
+                    _rawValue = Model == null ? null : Accessor.GetValue(Model);
                     _hasFetched = true;
                 }
 

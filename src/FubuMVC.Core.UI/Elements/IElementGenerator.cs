@@ -6,10 +6,13 @@ namespace FubuMVC.Core.UI.Elements
 {
     public interface IElementGenerator<T> where T : class
     {
+        T Model { get; set; }
         HtmlTag LabelFor(Expression<Func<T, object>> expression, string profile = null, T model = null);
         HtmlTag InputFor(Expression<Func<T, object>> expression, string profile = null, T model = null);
         HtmlTag DisplayFor(Expression<Func<T, object>> expression, string profile = null, T model = null);
 
-        T Model { get; set; }
+        HtmlTag LabelFor(ElementRequest request, string profile = null, T model = null);
+        HtmlTag InputFor(ElementRequest request, string profile = null, T model = null);
+        HtmlTag DisplayFor(ElementRequest request, string profile = null, T model = null);
     }
 }

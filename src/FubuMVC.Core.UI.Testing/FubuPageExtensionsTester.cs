@@ -28,7 +28,7 @@ namespace FubuMVC.Core.UI.Testing
         [Test]
         public void should_return_text_box_tag_with_blank_value()
         {
-            _page.TextBoxFor(_expression).ToString().ShouldEqual("<input type=\"text\" name=\"name\" />");
+            _page.TextBoxFor(_expression).ToString().ShouldEqual("<input type=\"text\" name=\"name\" value=\"\" />");
             _page.VerifyAllExpectations();
         }
     }

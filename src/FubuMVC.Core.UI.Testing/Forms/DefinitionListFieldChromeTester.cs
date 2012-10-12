@@ -6,7 +6,7 @@ using NUnit.Framework;
 namespace FubuMVC.Core.UI.Testing.Forms
 {
     [TestFixture]
-    public class DefinitionListLabelAndFieldTester
+    public class DefinitionListFieldChromeTester
     {
         #region Setup/Teardown
 
@@ -20,7 +20,7 @@ namespace FubuMVC.Core.UI.Testing.Forms
         [Test]
         public void place_body_tag()
         {
-            var layout = new DefinitionListLabelAndField();
+            var layout = new DefinitionListFieldChrome();
             HtmlTag label = new HtmlTag("span").Text("some text");
 
             layout.BodyTag = label;
@@ -30,7 +30,7 @@ namespace FubuMVC.Core.UI.Testing.Forms
         [Test]
         public void place_label_tag()
         {
-            var layout = new DefinitionListLabelAndField();
+            var layout = new DefinitionListFieldChrome();
             HtmlTag label = new HtmlTag("span").Text("some text");
 
             layout.LabelTag = label;
@@ -40,7 +40,7 @@ namespace FubuMVC.Core.UI.Testing.Forms
         [Test]
         public void replace_the_label()
         {
-            var layout = new DefinitionListLabelAndField();
+            var layout = new DefinitionListFieldChrome();
             HtmlTag label = new HtmlTag("span").Text("some text");
             layout.LabelTag = label;
 
@@ -53,7 +53,7 @@ namespace FubuMVC.Core.UI.Testing.Forms
         [Test]
         public void write_to_string()
         {
-            var layout = new DefinitionListLabelAndField();
+            var layout = new DefinitionListFieldChrome();
             HtmlTag label = new HtmlTag("span").Text("some text");
             layout.LabelTag = label;
 

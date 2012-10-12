@@ -46,7 +46,7 @@ namespace FubuMVC.Core.UI.Testing
         [Test]
         public void input_for_string()
         {
-            theGenerator.InputFor(x => x.Name).ToString().ShouldEqual("<input type=\"text\" name=\"Name\" />");
+            theGenerator.InputFor(x => x.Name).ToString().ShouldEqual("<input type=\"text\" value=\"\" name=\"Name\" />");
 
             theTarget.Name = "Shiner";
 

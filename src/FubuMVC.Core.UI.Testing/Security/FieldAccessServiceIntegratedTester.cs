@@ -25,7 +25,7 @@ namespace FubuMVC.Core.UI.Testing.Security
                 {Category = FieldAccessCategory.LogicCondition}
             };
 
-            _service = new FieldAccessService(new FieldAccessRightsExecutor(), rules, null, null);
+            _service = new FieldAccessService(new FieldAccessRightsExecutor(), rules, null);
         }
 
         #endregion
