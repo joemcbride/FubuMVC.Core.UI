@@ -16,9 +16,14 @@ namespace FubuMVC.Core.UI
             _set = set;
         }
 
-        public void Add(IElementBuilder builder)
+        public void Add(Func<ElementRequest, bool> filter, IElementBuilder builder)
         {
-            _set.Add(builder);
+            _set.Add(filter, builder);
+        }
+
+        public void Add(IElementBuilderPolicy policy)
+        {
+            _set.Add(policy);
         }
 
         public void Add(IElementModifier modifier)
@@ -26,7 +31,7 @@ namespace FubuMVC.Core.UI
             _set.Add(modifier);
         }
 
-        public void Builder<T>() where T : IElementBuilder, new()
+        public void BuilderPolicy<T>() where T : IElementBuilderPolicy, new()
         {
             Add(new T());
         }

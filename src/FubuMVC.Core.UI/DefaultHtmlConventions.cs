@@ -9,17 +9,18 @@ namespace FubuMVC.Core.UI
     {
         public DefaultHtmlConventions()
         {
-            Editors.Builder<CheckboxBuilder>();
-            Editors.Builder<TextboxBuilder>();
+            Editors.BuilderPolicy<CheckboxBuilder>();
+
+            Editors.Always.BuildBy<TextboxBuilder>();
 
             Editors.Modifier<AddNameModifier>();
 
-            Displays.Builder<SpanDisplayBuilder>();
+            Displays.Always.BuildBy<SpanDisplayBuilder>();
 
-            Labels.Builder<DefaultLabelBuilder>();
+            Labels.Always.BuildBy<DefaultLabelBuilder>();
 
-            Templates.Displays.Builder<TemplateSpanBuilder>();
-            Templates.Editors.Builder<TemplateTextboxBuilder>();
+            Templates.Displays.Always.BuildBy<TemplateSpanBuilder>();
+            Templates.Editors.Always.BuildBy<TemplateTextboxBuilder>();
 
             Templates.Displays.Always.ModifyWith<DataFldModifier>();
             Templates.Editors.Always.ModifyWith<DataFldModifier>();

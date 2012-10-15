@@ -19,7 +19,7 @@ namespace FubuMVC.Core.UI.Testing.Scenarios
             {
                 definition.Configure(x =>
                 {
-                    x.Displays.Add(new SpanDisplayBuilder());
+                    x.Displays.Add(r => true, new SpanDisplayBuilder());
                 });
                 definition.Model = new Elements.Address{
                     Address1 = "22 Cherry Tree Lane"
@@ -39,7 +39,7 @@ namespace FubuMVC.Core.UI.Testing.Scenarios
 
                 definition.Configure(x =>
                 {
-                    x.Displays.Add(new SpanDisplayBuilder());
+                    x.Displays.Add(r => true, new SpanDisplayBuilder());
                 });
                 definition.Model = new Elements.Address
                 {
@@ -66,7 +66,7 @@ namespace FubuMVC.Core.UI.Testing.Scenarios
             {
                 definition.Configure(x =>
                 {
-                    x.Displays.Add(new SpanDisplayBuilder());
+                    x.Displays.Add(r => true, new SpanDisplayBuilder());
                 });
 
                 definition.Naming = new FakeElementNamingConvention();
@@ -106,7 +106,7 @@ namespace FubuMVC.Core.UI.Testing.Scenarios
             {
                 definition.Configure(x =>
                 {
-                    x.Displays.Add(new FakeBuilder());
+                    x.Displays.Add(r => true, new FakeBuilder());
                 });
 
                 definition.Model = new Elements.Address();

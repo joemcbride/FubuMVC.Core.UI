@@ -6,4 +6,14 @@ namespace FubuMVC.Core.UI.Elements
     {
         
     }
+
+    public interface IElementBuilderPolicy : ITagBuilderPolicy<ElementRequest>
+    {
+        
+    }
+
+    public abstract class ElementTagBuilder : TagBuilder<ElementRequest>, IElementBuilderPolicy, IElementBuilder
+    {
+        
+    }
 }

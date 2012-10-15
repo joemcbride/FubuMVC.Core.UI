@@ -16,7 +16,7 @@
       <dependency id="FubuMVC.Core.View" />
       <dependency id="FubuCore" version="0.9.9.182" />
       <dependency id="FubuLocalization" version="0.9.5.48" />
-      <dependency id="HtmlTags" version="1.1.0.118" />
+      <dependency id="HtmlTags" version="1.2.0.120" />
     </dependencies>
   </metadata>
   <files>

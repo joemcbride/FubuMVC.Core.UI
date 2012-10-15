@@ -22,7 +22,7 @@ namespace FubuMVC.Core.UI.Testing
         [Test]
         public void basic_add_builder_2()
         {
-            theRegistry.Displays.Builder<FakeDisplayBuilder>();
+            theRegistry.Displays.BuilderPolicy<FakeDisplayBuilder>();
             theTarget.Name = "Shiner";
 
             generator.DisplayFor(x => x.Name).ToString().ShouldEqual("<span class=\"fake\">Shiner</span>");
@@ -48,14 +48,14 @@ namespace FubuMVC.Core.UI.Testing
 
     }
 
-    public class FakeDisplayBuilder : IElementBuilder
+    public class FakeDisplayBuilder : ElementTagBuilder
     {
-        public bool Matches(ElementRequest subject)
+        public override bool Matches(ElementRequest subject)
         {
             return true;
         }
 
-        public HtmlTag Build(ElementRequest request)
+        public override HtmlTag Build(ElementRequest request)
         {
             return new HtmlTag("span").Text(request.StringValue()).AddClass("fake");
         }

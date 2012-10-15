@@ -5,14 +5,14 @@ using FubuCore;
 namespace FubuMVC.Core.UI.Elements.Builders
 {
     [Description("Builds an html checkbox for a boolean value")]
-    public class CheckboxBuilder : IElementBuilder
+    public class CheckboxBuilder : ElementTagBuilder
     {
-        public bool Matches(ElementRequest subject)
+        public override bool Matches(ElementRequest subject)
         {
             return subject.Accessor.PropertyType == typeof(bool);
         }
 
-        public HtmlTag Build(ElementRequest request)
+        public override HtmlTag Build(ElementRequest request)
         {
             return new CheckboxTag(request.RawValue.As<bool>());
         }
