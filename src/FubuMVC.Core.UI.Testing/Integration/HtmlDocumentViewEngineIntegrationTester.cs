@@ -31,7 +31,7 @@ namespace FubuMVC.Core.UI.Testing.Integration
         }
 
         [Test]
-        public void the_view_engine_does_not_include_itself()
+        public void the_view_engine_does_not_include_itself_with_no_closing_type()
         {
             var graph = new BehaviorGraph();
             graph.Types.AddAssembly(GetType().Assembly);

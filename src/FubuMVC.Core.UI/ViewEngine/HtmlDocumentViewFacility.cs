@@ -10,7 +10,7 @@ namespace FubuMVC.Core.UI.ViewEngine
     {
         public IEnumerable<IViewToken> FindViews(BehaviorGraph graph)
         {
-            return graph.Types.TypesMatching(t => t.IsConcrete() && t.Closes(typeof (FubuHtmlDocument<>)))
+            return graph.Types.TypesMatching(t => t.IsConcrete() && t.Closes(typeof (FubuHtmlDocument<>)) && !t.Equals(typeof(FubuHtmlDocument<>)))
                 .Select(t => new HtmlDocumentViewToken(t));
         }
     }
