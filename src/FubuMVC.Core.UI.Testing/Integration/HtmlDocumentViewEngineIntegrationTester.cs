@@ -31,6 +31,19 @@ namespace FubuMVC.Core.UI.Testing.Integration
         }
 
         [Test]
+        public void the_view_engine_does_not_include_itself()
+        {
+            var graph = new BehaviorGraph();
+            graph.Types.AddAssembly(GetType().Assembly);
+            graph.Types.AddAssembly(typeof(FubuHtmlDocument).Assembly);
+
+            var engine = new HtmlDocumentViewFacility();
+
+            engine.FindViews(graph).Any(x => x.ViewType == typeof(FubuHtmlDocument<>))
+                .ShouldBeFalse();
+        }
+
+        [Test]
         public void view_token()
         {
             var token = new HtmlDocumentViewToken(typeof (DocViewModelDocument));

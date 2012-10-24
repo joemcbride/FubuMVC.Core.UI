@@ -10,7 +10,7 @@ using System.Collections.Generic;
 
 namespace FubuMVC.Core.UI
 {
-    public class FubuHtmlDocument : HtmlDocument, IFubuPage
+    public abstract class FubuHtmlDocument : HtmlDocument, IFubuPage
     {
         private readonly IServiceLocator _services;
 
@@ -64,7 +64,7 @@ namespace FubuMVC.Core.UI
         }
     }
 
-    public class FubuHtmlDocument<T> : FubuHtmlDocument, IFubuPage<T> where T : class
+    public abstract class FubuHtmlDocument<T> : FubuHtmlDocument, IFubuPage<T> where T : class
     {
         private readonly IFubuRequest _request;
         private T _model;
