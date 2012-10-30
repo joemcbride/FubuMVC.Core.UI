@@ -31,11 +31,13 @@ namespace FubuMVC.Core.UI.Testing.Integration
     {
         private readonly FubuHtmlDocument _document;
         private readonly IOutputWriter _writer;
+        private readonly IPartialInvoker _partials;
 
-        public CachedEndpoints(FubuHtmlDocument document, IOutputWriter writer)
+        public CachedEndpoints(FubuHtmlDocument document, IOutputWriter writer, IPartialInvoker partials)
         {
             _document = document;
             _writer = writer;
+            _partials = partials;
         }
 
 
@@ -44,7 +46,9 @@ namespace FubuMVC.Core.UI.Testing.Integration
         {
             _writer.AppendHeader(HttpResponseHeader.ETag, Guid.NewGuid().ToString());
 
-            _document.Add(new LiteralTag(_document.Partial<DateRequest>().ToString()));
+            var html = _partials.Invoke<DateRequest>();
+
+            _document.Add(new LiteralTag(html));
 
             return _document;
         }
