@@ -1,7 +1,6 @@
 using System;
 using System.Linq.Expressions;
 using FubuCore;
-using FubuMVC.Core.Assets;
 using FubuMVC.Core.Runtime;
 using FubuMVC.Core.Urls;
 using FubuMVC.Core.View;
@@ -41,16 +40,6 @@ namespace FubuMVC.Core.UI
         public IUrlRegistry Urls
         {
             get { return _services.GetInstance<IUrlRegistry>(); }
-        }
-
-        public void WriteAssetsToHead()
-        {
-            Head.Append(this.WriteAssetTags());
-        }
-
-        public void WriteScriptsToBody()
-        {
-            Body.Append(this.WriteScriptTags());
         }
 
         public void Add(Func<FubuHtmlDocument, HtmlTag> func)
