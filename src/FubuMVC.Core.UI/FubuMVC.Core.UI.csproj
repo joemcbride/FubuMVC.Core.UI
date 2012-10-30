@@ -103,7 +103,6 @@
     <Compile Include="HtmlConventionsActivator.cs" />
     <Compile Include="ElementConventionsFubuPageExtensions.cs" />
     <Compile Include="HtmlTagExtensions.cs" />
-    <Compile Include="PartialExpressionExtensions.cs" />
     <Compile Include="ProfileExpression.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scenarios\HtmlElementScenario.cs" />
