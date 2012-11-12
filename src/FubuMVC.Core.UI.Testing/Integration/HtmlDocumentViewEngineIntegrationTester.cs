@@ -22,7 +22,6 @@ namespace FubuMVC.Core.UI.Testing.Integration
         public void the_view_engine_can_find_documents()
         {
             var graph = new BehaviorGraph();
-            graph.Types.AddAssembly(GetType().Assembly);
 
             var engine = new HtmlDocumentViewFacility();
 
@@ -34,8 +33,6 @@ namespace FubuMVC.Core.UI.Testing.Integration
         public void the_view_engine_does_not_include_itself_with_no_closing_type()
         {
             var graph = new BehaviorGraph();
-            graph.Types.AddAssembly(GetType().Assembly);
-            graph.Types.AddAssembly(typeof(FubuHtmlDocument).Assembly);
 
             var engine = new HtmlDocumentViewFacility();
 

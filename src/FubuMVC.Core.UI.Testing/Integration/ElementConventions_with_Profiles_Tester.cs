@@ -23,7 +23,7 @@ namespace FubuMVC.Core.UI.Testing.Integration
 
             // This wouldn't be necessary in most circumstances, but since this application
             // and registry is really built by FubuMVC.TestingHarness, we need to add the assembly
-            registry.Applies.ToAssemblyContainingType<ProfiledEndpoint>();
+            //registry.Applies.ToAssemblyContainingType<ProfiledEndpoint>();
         }
 
         [Test]

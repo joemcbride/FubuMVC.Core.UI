@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using FubuCore;
@@ -10,7 +11,11 @@ namespace FubuMVC.Core.UI.ViewEngine
     {
         public IEnumerable<IViewToken> FindViews(BehaviorGraph graph)
         {
-            return graph.Types.TypesMatching(t => t.IsConcrete() && t.Closes(typeof (FubuHtmlDocument<>)) && !t.Equals(typeof(FubuHtmlDocument<>)))
+            var types = new TypePool();
+            types.AddAssemblies(AppDomain.CurrentDomain.GetAssemblies());
+            types.IgnoreExportTypeFailures = true;
+
+            return types.TypesMatching(t => t.IsConcrete() && t.Closes(typeof (FubuHtmlDocument<>)) && !t.Equals(typeof(FubuHtmlDocument<>)))
                 .Select(t => new HtmlDocumentViewToken(t));
         }
     }
