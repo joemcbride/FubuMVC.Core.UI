@@ -47,7 +47,7 @@ namespace FubuMVC.Core.UI.Testing.Forms
         [Test]
         public void end_form()
         {
-            page.EndForm().ShouldEqual("</form>");
+            page.EndForm().ToString().ShouldEqual("</form>");
         }
 
         [Test]
