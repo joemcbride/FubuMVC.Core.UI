@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
+using System.Web;
+
 using FubuMVC.Core.Http;
 using FubuMVC.Core.View;
 using HtmlTags;
@@ -46,9 +48,9 @@ namespace FubuMVC.Core.UI
             return new FormTag(url);
         }
 
-        public static string EndForm(this IFubuPage page)
+        public static IHtmlString EndForm(this IFubuPage page)
         {
-            return "</form>";
+            return new HtmlString("</form>");
         }
     }
 }
