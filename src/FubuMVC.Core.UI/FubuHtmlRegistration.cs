@@ -12,10 +12,6 @@ namespace FubuMVC.Core.UI
             registry.Services<UIServiceRegistry>();
 
             registry.ViewFacility(new HtmlDocumentViewFacility());
-
-            registry.AlterSettings<HtmlConventionLibrary>(x => {
-                x.RegisterService<IFieldChrome, DefinitionListFieldChrome>();
-            });
         }
     }
 }

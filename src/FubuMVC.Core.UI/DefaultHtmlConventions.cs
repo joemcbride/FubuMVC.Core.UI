@@ -1,6 +1,7 @@
 using FubuMVC.Core.Runtime;
 using FubuMVC.Core.UI.Elements;
 using FubuMVC.Core.UI.Elements.Builders;
+using FubuMVC.Core.UI.Forms;
 using HtmlTags.Conventions;
 
 namespace FubuMVC.Core.UI
@@ -24,6 +25,8 @@ namespace FubuMVC.Core.UI
 
             Templates.Displays.Always.ModifyWith<DataFldModifier>();
             Templates.Editors.Always.ModifyWith<DataFldModifier>();
+
+            FieldChrome<DefinitionListFieldChrome>();
         }
     }
 }
