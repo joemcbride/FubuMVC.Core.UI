@@ -84,6 +84,7 @@
     <Compile Include="Elements\ElementConstants.cs" />
     <Compile Include="Elements\ElementGenerator.cs" />
     <Compile Include="Elements\ElementIdActivator.cs" />
+    <Compile Include="Elements\ElementOverridesExtensions.cs" />
     <Compile Include="Elements\ElementRequest.cs" />
     <Compile Include="Elements\ElementRequestActivator.cs" />
     <Compile Include="Elements\IElementBuilder.cs" />
