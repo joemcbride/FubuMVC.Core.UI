@@ -89,6 +89,7 @@
     <Compile Include="Elements\IElementGenerator.cs" />
     <Compile Include="Elements\IElementModifier.cs" />
     <Compile Include="Elements\IElementNamingConvention.cs" />
+    <Compile Include="Elements\IElementTagOverride.cs" />
     <Compile Include="Elements\TagRequestActivator.cs" />
     <Compile Include="Forms\DefinitionListFieldChrome.cs" />
     <Compile Include="Forms\FormLineExpression.cs" />

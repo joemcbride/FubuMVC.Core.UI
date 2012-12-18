@@ -131,6 +131,7 @@
     <Compile Include="Elements\ElementGeneratorTester.cs" />
     <Compile Include="Elements\ElementRequestActivatorTester.cs" />
     <Compile Include="Elements\ElementRequestTester.cs" />
+    <Compile Include="Elements\ElementTagOverrideTester.cs" />
     <Compile Include="Forms\DefinitionListFieldChromeTester.cs" />
     <Compile Include="Forms\FormForExpressionTester.cs" />
     <Compile Include="Forms\FormLineExpressionTester.cs" />
