@@ -63,6 +63,7 @@
       <Link>CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="AuthorizationOnPageExtensions.cs" />
+    <Compile Include="Elements\AccessorOverrideElementBuilderPolicy.cs" />
     <Compile Include="Elements\Builders\DataFldModifier.cs" />
     <Compile Include="DefaultHtmlConventions.cs" />
     <Compile Include="ElementCategoryExpression.cs" />

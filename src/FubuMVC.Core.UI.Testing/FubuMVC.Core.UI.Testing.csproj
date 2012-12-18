@@ -118,6 +118,7 @@
     <Compile Include="configuring_conventions_by_profile.cs" />
     <Compile Include="DefaultHtmlConventionTester.cs" />
     <Compile Include="Elements\AccessorDefTester.cs" />
+    <Compile Include="Elements\AccessorOverrideElementBuilderPolicyTester.cs" />
     <Compile Include="Elements\AddressClasses.cs" />
     <Compile Include="Elements\Builders\AddClassForAttributeModifierTester.cs" />
     <Compile Include="Elements\Builders\AddClassModifierTester.cs" />
