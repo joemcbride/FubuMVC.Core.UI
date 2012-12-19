@@ -19,15 +19,11 @@ namespace FubuMVC.Core.UI.Testing.Forms
         [SetUp]
         public void SetUp()
         {
-            urls = MockRepository.GenerateMock<IUrlRegistry>();
             page = MockRepository.GenerateMock<IFubuPage>();
-
-            page.Stub(x => x.Urls).Return(urls);
         }
 
         #endregion
 
-        private IUrlRegistry urls;
         private IFubuPage page;
 
         public class AddressController
@@ -50,36 +46,6 @@ namespace FubuMVC.Core.UI.Testing.Forms
             page.EndForm().ToString().ShouldEqual("</form>");
         }
 
-        [Test]
-        public void form_for_from_controller_expression()
-        {
-            Expression<Action<AddressController>> expression = c => c.Address();
-            urls.Stub(x => x.UrlFor(expression, "POST")).Return("the url for the action");
-            page.FormFor(expression).Attr("action").ShouldEqual("the url for the action");
-        }
-
-        [Test]
-        public void form_for_with_a_new_input_model()
-        {
-            urls.Stub(x => x.UrlFor(Arg<AddressViewModel>.Is.Anything, Arg<string>.Is.Equal("POST"))).Return(
-                "the url for the action");
-
-            FormTag tag = page.FormFor<AddressViewModel>();
-
-            tag.Attr("action").ShouldEqual("the url for the action");
-        }
-
-        [Test]
-        public void form_for_with_an_input_model()
-        {
-            var model = new AddressViewModel();
-
-            urls.Stub(x => x.UrlFor(model, "POST")).Return("the url for the action");
-
-            FormTag tag = page.FormFor(model);
-
-            tag.Attr("action").ShouldEqual("the url for the action");
-        }
 
         [Test]
         public void form_for_with_an_url()
@@ -92,12 +58,6 @@ namespace FubuMVC.Core.UI.Testing.Forms
             page.FormFor("some action").Attr("action").ShouldEqual("http://server/some action");
         }
 
-        [Test]
-        public void form_for_with_an_url_object()
-        {
-            object url = "some url";
-            page.FormFor(url).Attr("action").ShouldEqual("some url");
-        }
     }
 
     public class StubCurrentHttpRequest : ICurrentHttpRequest

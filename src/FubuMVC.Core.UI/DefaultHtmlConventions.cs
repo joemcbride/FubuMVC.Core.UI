@@ -27,6 +27,8 @@ namespace FubuMVC.Core.UI
             Templates.Editors.Always.ModifyWith<DataFldModifier>();
 
             FieldChrome<DefinitionListFieldChrome>();
+
+            Forms.Add(new FormTagBuilder());
         }
     }
 }

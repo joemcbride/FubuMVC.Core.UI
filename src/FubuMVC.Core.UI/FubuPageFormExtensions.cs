@@ -3,49 +3,63 @@ using System.Linq.Expressions;
 using System.Web;
 
 using FubuMVC.Core.Http;
+using FubuMVC.Core.Registration.Querying;
+using FubuMVC.Core.UI.Forms;
 using FubuMVC.Core.View;
 using HtmlTags;
+using FubuCore;
+using HtmlTags.Conventions;
 
 namespace FubuMVC.Core.UI
 {
     public static class FubuPageFormExtensions
     {
-        public static FormTag FormFor(this IFubuPage page)
+        public static HtmlTag FormFor(this IFubuPage page)
         {
             return new FormTag();
         }
 
-        public static FormTag FormFor(this IFubuPage page, string url)
+        public static HtmlTag FormFor(this IFubuPage page, string url)
         {
             url = page.Get<ICurrentHttpRequest>().ToFullUrl(url);
             return new FormTag(url);
         }
 
-        public static FormTag FormFor<TInputModel>(this IFubuPage page) where TInputModel : new()
+        public static HtmlTag FormFor<TInputModel>(this IFubuPage page) where TInputModel : new()
         {
-            string url = page.Urls.UrlFor(new TInputModel(), categoryOrHttpMethod: "POST");
-            return new FormTag(url);
+            var search = ChainSearch.ByUniqueInputType(typeof (TInputModel), "POST");
+            return page.FormFor(search, new TInputModel());
         }
 
-        public static FormTag FormFor<TInputModel>(this IFubuPage page, TInputModel model)
+        public static HtmlTag FormFor<TInputModel>(this IFubuPage page, TInputModel model)
         {
-            string url = page.Urls.UrlFor(model, categoryOrHttpMethod: "POST");
-            return new FormTag(url);
-        }
-
-
-        public static FormTag FormFor<TController>(this IFubuPage view, Expression<Action<TController>> expression)
-        {
-            string url = view.Urls.UrlFor(expression, categoryOrHttpMethod: "POST");
-            return new FormTag(url);
+            return page.FormFor(ChainSearch.ByUniqueInputType(model.GetType(), "POST"), model);
         }
 
 
-        public static FormTag FormFor(this IFubuPage view, object modelOrUrl)
+        public static HtmlTag FormFor<TController>(this IFubuPage view, Expression<Action<TController>> expression)
         {
-            string url = modelOrUrl as string ?? view.Urls.UrlFor(modelOrUrl, categoryOrHttpMethod: "POST");
+            var search = ChainSearch.ForMethod(expression, "POST");
+            return view.FormFor(search, null);
+        }
 
-            return new FormTag(url);
+
+        public static HtmlTag FormFor(this IFubuPage view, object input)
+        {
+            if (input is string)
+            {
+                return view.FormFor(input.As<string>());
+            }
+
+            var search = ChainSearch.ByUniqueInputType(input.GetType(), "POST");
+            return view.FormFor(search, input);
+        }
+
+        public static HtmlTag FormFor(this IFubuPage view, ChainSearch search, object input)
+        {
+            var request = new FormRequest(search, input);
+
+            return view.Get<ITagGeneratorFactory>().GeneratorFor<FormRequest>().Build(request);
         }
 
         public static IHtmlString EndForm(this IFubuPage page)

@@ -1,6 +1,7 @@
 using System;
 using FubuMVC.Core.UI.Elements;
 using FubuMVC.Core.UI.Elements.Builders;
+using FubuMVC.Core.UI.Forms;
 using HtmlTags;
 using HtmlTags.Conventions;
 using FubuCore;
@@ -40,6 +41,11 @@ namespace FubuMVC.Core.UI
         {
             registry.AlterSettings<HtmlConventionLibrary>(library => library.Import(_library));
         }
+
+        public TagLibrary<FormRequest> Forms
+        {
+            get { return _library.For<FormRequest>(); }
+        } 
     }
 
     public class ElementActionExpression
