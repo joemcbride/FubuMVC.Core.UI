@@ -136,6 +136,7 @@
     <Compile Include="Forms\DefinitionListFieldChromeTester.cs" />
     <Compile Include="Forms\FormForExpressionTester.cs" />
     <Compile Include="Forms\FormLineExpressionTester.cs" />
+    <Compile Include="Forms\FormRequestTester.cs" />
     <Compile Include="Forms\FubuPageExtensionsTester.cs" />
     <Compile Include="FubuPageExtensionsTester.cs" />
     <Compile Include="HtmlConventionRegistryTester.cs" />
