@@ -1,4 +1,5 @@
 ﻿using FubuCore;
+using FubuMVC.Core.Http;
 using FubuMVC.Core.Registration.Nodes;
 using FubuMVC.Core.Registration.Querying;
 using HtmlTags.Conventions;
@@ -39,6 +40,7 @@ namespace FubuMVC.Core.UI.Forms
         {
             _services = locator;
             var resolver = locator.GetInstance<IChainResolver>();
+            var currentHttpRequest = locator.GetInstance<ICurrentHttpRequest>();
             Chain = resolver.Find(Search);
 
             if (Chain == null)
@@ -51,7 +53,7 @@ namespace FubuMVC.Core.UI.Forms
                 throw new FubuException(334, "Cannot post to this endpoint because there is no route");
             }
 
-            Url = Chain.Route.CreateUrlFromInput(_input);
+            Url = currentHttpRequest.ToFullUrl(Chain.Route.CreateUrlFromInput(_input));
         }
 
         public IServiceLocator Services

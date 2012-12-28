@@ -96,7 +96,6 @@
     <Compile Include="Forms\DefinitionListFieldChrome.cs" />
     <Compile Include="Forms\FormLineExpression.cs" />
     <Compile Include="Forms\FormRequest.cs" />
-    <Compile Include="Forms\FormRequestActivator.cs" />
     <Compile Include="Forms\FormTagBuilder.cs" />
     <Compile Include="Forms\IFieldChrome.cs" />
     <Compile Include="Forms\TableRowFieldChrome.cs" />
