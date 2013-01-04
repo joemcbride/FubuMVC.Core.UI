@@ -7,11 +7,6 @@ namespace FubuMVC.Core.UI.Testing.Integration
     [TestFixture]
     public class ElementConventionsFubuPageExtensions_FullStackTester_DefaultConventions : FubuPageExtensionContext
     {
-        protected override void configure(FubuRegistry registry)
-        {
-            registry.Actions.IncludeType<ConventionEndpoint>();
-        }
-
         [Test]
         public void input_for_default_conventions()
         {

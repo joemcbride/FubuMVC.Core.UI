@@ -4,24 +4,39 @@ using FubuCore;
 using FubuMVC.Core.Ajax;
 using FubuMVC.Core.Runtime;
 using FubuMVC.Core.View;
+using FubuMVC.Katana;
+using FubuMVC.OwinHost;
+using FubuMVC.StructureMap;
 using FubuMVC.TestingHarness;
 using HtmlTags;
 using NUnit.Framework;
 using FubuTestingSupport;
+using StructureMap;
 
 namespace FubuMVC.Core.UI.Testing.Integration
 {
     [TestFixture]
-    public class FormRequestConventionsIntegrationTester : FubuRegistryHarness
+    public class FormRequestConventionsIntegrationTester
     {
-        protected override void configure(FubuRegistry registry)
+        private EmbeddedFubuMvcServer _server;
+
+        [TestFixtureSetUp]
+        public void StartServer()
         {
-            registry.Actions.IncludeType<FormRequestEndpoint>();
+            var port = PortFinder.FindPort(5500);
+
+            _server = FubuApplication.DefaultPolicies().StructureMap(new Container()).RunEmbedded(port: port);
+        }
+
+        [TestFixtureTearDown]
+        public void StopServer()
+        {
+            _server.Dispose();
         }
 
         private void runPage()
         {
-            endpoints.Get<FormRequestEndpoint>(x => x.get_form_conventions())
+            _server.Endpoints.Get<FormRequestEndpoint>(x => x.get_form_conventions())
                      .StatusCodeShouldBe(HttpStatusCode.OK);
         }
 
@@ -33,7 +48,7 @@ namespace FubuMVC.Core.UI.Testing.Integration
 
             runPage();
 
-            FormRequestEndpoint.LastTag.ToString().ShouldEqual("<form method=\"post\" action=\"{0}/form/Scooby\">".ToFormat(BaseAddress));
+            FormRequestEndpoint.LastTag.ToString().ShouldEqual("<form method=\"post\" action=\"{0}/form/Scooby\">".ToFormat(_server.BaseAddress));
         }
 
         [Test]
@@ -43,7 +58,7 @@ namespace FubuMVC.Core.UI.Testing.Integration
 
             runPage();
 
-            FormRequestEndpoint.LastTag.ToString().ShouldEqual("<form method=\"post\" action=\"{0}/update/target\">".ToFormat(BaseAddress));
+            FormRequestEndpoint.LastTag.ToString().ShouldEqual("<form method=\"post\" action=\"{0}/update/target\">".ToFormat(_server.BaseAddress));
         }
 
         [Test]
@@ -53,7 +68,7 @@ namespace FubuMVC.Core.UI.Testing.Integration
 
             runPage();
 
-            FormRequestEndpoint.LastTag.ToString().ShouldEqual("<form method=\"post\" action=\"{0}/update/target\">".ToFormat(BaseAddress));
+            FormRequestEndpoint.LastTag.ToString().ShouldEqual("<form method=\"post\" action=\"{0}/update/target\">".ToFormat(_server.BaseAddress));
         }
     }
 

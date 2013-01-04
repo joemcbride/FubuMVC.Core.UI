@@ -5,6 +5,9 @@ using FubuMVC.Core.Runtime;
 using FubuMVC.Core.UI.ViewEngine;
 using FubuTestingSupport;
 using NUnit.Framework;
+using FubuMVC.StructureMap;
+using StructureMap;
+using FubuMVC.Katana;
 
 namespace FubuMVC.Core.UI.Testing.Integration
 {
@@ -14,8 +17,13 @@ namespace FubuMVC.Core.UI.Testing.Integration
         [Test]
         public void can_render_a_simple_html_document_that_is_attached_via_view_conventions()
         {
-            SelfHostHarness.Endpoints.Get<DocEndpoint>(x => x.get_document())
-                .ReadAsText().ShouldContain("<h1>Name = Shiner</h1>");
+            using (var server = FubuApplication.DefaultPolicies().StructureMap(new Container()).RunEmbedded())
+            {
+                server.Endpoints.Get<DocEndpoint>(x => x.get_document())
+                    .ReadAsText().ShouldContain("<h1>Name = Shiner</h1>");
+            }
+
+
         }
 
         [Test]

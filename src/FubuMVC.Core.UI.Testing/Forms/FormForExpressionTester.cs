@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using FubuMVC.Core.Http;
 using FubuMVC.Core.UI.Testing.Elements;
@@ -91,6 +92,21 @@ namespace FubuMVC.Core.UI.Testing.Forms
         public string HttpMethod()
         {
             return TheHttpMethod;
+        }
+
+        public bool HasHeader(string key)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<string> GetHeader(string key)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<string> AllHeaderKeys()
+        {
+            throw new NotImplementedException();
         }
     }
 }

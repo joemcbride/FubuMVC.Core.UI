@@ -9,6 +9,7 @@ namespace FubuMVC.Core.UI
     {
         public void Configure(FubuRegistry registry)
         {
+            registry.Policies.Add<HtmlConventionActivation>();
             registry.Services<UIServiceRegistry>();
 
             registry.ViewFacility(new HtmlDocumentViewFacility());

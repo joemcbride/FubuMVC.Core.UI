@@ -16,8 +16,6 @@ namespace FubuMVC.Core.UI
 
             SetServiceIfNone<IElementNamingConvention, DefaultElementNamingConvention>();
 
-            AddService<IActivator, HtmlConventionsActivator>();
-
             AddService<IActivator>(typeof(DisplayConversionRegistryActivator));
 
             SetServiceIfNone<IPartialInvoker, PartialInvoker>();

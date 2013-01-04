@@ -7,20 +7,20 @@ using FubuLocalization;
 using FubuMVC.Core.Security;
 using FubuMVC.Core.UI.Elements;
 using FubuMVC.Core.View;
+using FubuMVC.OwinHost;
 using FubuMVC.TestingHarness;
 using HtmlTags;
 using NUnit.Framework;
 using FubuTestingSupport;
+using FubuMVC.StructureMap;
+using StructureMap;
+using FubuMVC.Katana;
 
 namespace FubuMVC.Core.UI.Testing.Integration
 {
     [TestFixture]
     public class FubuPageExtension_with_default_conventions_tester : FubuPageExtensionContext
     {
-        protected override void configure(FubuRegistry registry)
-        {
-            registry.Actions.IncludeType<ConventionEndpoint>();
-        }
         [Test]
         public void HeaderText()
         {
@@ -148,20 +148,43 @@ namespace FubuMVC.Core.UI.Testing.Integration
 
 
     [TestFixture]
-    public class FubuPageExtensionContext : FubuRegistryHarness
+    public class FubuPageExtensionContext
     {
-        protected string theResult;
+        [TestFixtureSetUp]
+        public void StartServer()
+        {
+            var port = PortFinder.FindPort(5500);
 
-        protected override void beforeRunning()
+            _server = FubuApplication.DefaultPolicies().StructureMap(new Container()).RunEmbedded(port:port);
+        }
+
+        [TestFixtureTearDown]
+        public void StopServer()
+        {
+            _server.Dispose();
+        }
+
+        [SetUp]
+        public void SetUp()
         {
             theResult = string.Empty;
         }
+
+
+        protected string theResult;
+        private EmbeddedFubuMvcServer _server;
+
+        public string BaseAddress
+        {
+            get { return _server.BaseAddress; }
+        }
+
 
         protected void execute(Func<IFubuPage<ConventionTarget>, object> func)
         {
             ConventionEndpoint.Source = func;
 
-            var response = endpoints.Get<ConventionEndpoint>(x => x.get_result());
+            var response = _server.Endpoints.Get<ConventionEndpoint>(x => x.get_result());
             response.StatusCodeShouldBe(HttpStatusCode.OK);
 
             theResult = response.ReadAsText();

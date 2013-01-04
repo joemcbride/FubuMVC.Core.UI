@@ -1,61 +1,83 @@
 ﻿using System;
 using FubuCore;
+using FubuMVC.Core.Endpoints;
 using FubuMVC.Core.Registration;
 using FubuMVC.Core.Runtime;
 using FubuMVC.Core.UI.Elements;
+using FubuMVC.Katana;
+using FubuMVC.StructureMap;
 using FubuMVC.TestingHarness;
 using HtmlTags;
 using HtmlTags.Conventions;
 using NUnit.Framework;
 using FubuTestingSupport;
+using StructureMap;
 
 namespace FubuMVC.Core.UI.Testing.Integration
 {
     [TestFixture]
-    public class Explicit_accessor_overrides_integration_tester : FubuRegistryHarness
+    public class Explicit_accessor_overrides_integration_tester
     {
-        protected override void configure(FubuRegistry registry)
+        public class TestRegistry : FubuRegistry
         {
-            registry.Actions.IncludeType<OverrideEndpoint>();
+            public TestRegistry()
+            {
+                Actions.IncludeType<OverrideEndpoint>();
 
-            // The profile has to exist before accessors can work
-            registry.Import<HtmlConventionRegistry>(x => {
-                x.Profile("Green", profile => {
-                    profile.Displays.Always.BuildBy<ComplexBuilder>();
+                // The profile has to exist before accessors can work
+                Import<HtmlConventionRegistry>(x =>
+                {
+                    x.Profile("Green", profile =>
+                    {
+                        profile.Displays.Always.BuildBy<ComplexBuilder>();
+                    });
                 });
-            });
+            }
         }
+
 
         [Test]
         public void override_the_display_for_the_default()
         {
-            endpoints.GetByInput(new OverrideRequest {Category = ElementConstants.Display})
+            using (var server = FubuApplication.For<TestRegistry>().StructureMap(new Container()).RunEmbedded())
+            {
+                server.Endpoints.GetByInput(new OverrideRequest {Category = ElementConstants.Display})
                 .ReadAsText()     
                 .ShouldEqual(new BlueBuilder().Build(null).ToString());
+            }
         }
 
         [Test]
         public void override_the_display_for_the_label()
         {
-            endpoints.GetByInput(new OverrideRequest { Category = ElementConstants.Label })
+            using (var server = FubuApplication.For<TestRegistry>().StructureMap(new Container()).RunEmbedded())
+            {
+                server.Endpoints.GetByInput(new OverrideRequest { Category = ElementConstants.Label })
                 .ReadAsText()
                 .ShouldEqual(new SimpleBuilder().Build(null).ToString());
+            }
         }
 
         [Test]
         public void override_the_display_for_the_input()
         {
-            endpoints.GetByInput(new OverrideRequest { Category = ElementConstants.Editor })
+            using (var server = FubuApplication.For<TestRegistry>().StructureMap(new Container()).RunEmbedded())
+            {
+                server.Endpoints.GetByInput(new OverrideRequest { Category = ElementConstants.Editor })
                 .ReadAsText()
                 .ShouldEqual(new ComplexBuilder().Build(null).ToString());
+            }
         }
 
         [Test]
         public void override_display_by_profile()
         {
-            endpoints.GetByInput(new OverrideRequest { Category = ElementConstants.Display, Profile = "Green"})
+            using (var server = FubuApplication.For<TestRegistry>().StructureMap(new Container()).RunEmbedded())
+            {
+                server.Endpoints.GetByInput(new OverrideRequest { Category = ElementConstants.Display, Profile = "Green"})
                 .ReadAsText()
                 .ShouldEqual(new GreenBuilder().Build(null).ToString());
+            }
         }
     }
 

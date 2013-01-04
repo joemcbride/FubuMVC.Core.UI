@@ -12,7 +12,7 @@
     <description>Html Conventions and other Html generation goodness for FubuMVC applications</description>
     <tags>web framework mvc fubumvc</tags>
     <dependencies>
-      <dependency id="FubuMVC.Core" version="0.9.8.1247" />
+      <dependency id="FubuMVC.Core" version="0.9.9.1388" />
       <dependency id="FubuMVC.Core.View" />
       <dependency id="FubuCore" version="0.9.9.203" />
       <dependency id="FubuLocalization" version="0.9.5.48" />

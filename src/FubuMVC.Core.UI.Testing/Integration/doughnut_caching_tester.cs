@@ -3,27 +3,35 @@ using System.Net;
 using FubuMVC.Core.Caching;
 using FubuMVC.Core.Endpoints;
 using FubuMVC.Core.Runtime;
+using FubuMVC.Katana;
+using FubuMVC.StructureMap;
 using HtmlTags;
 using NUnit.Framework;
 using FubuTestingSupport;
+using StructureMap;
 
 namespace FubuMVC.Core.UI.Testing.Integration
 {
 
     [TestFixture]
-    public class doughnut_caching_tester : SharedHarnessContext
+    public class doughnut_caching_tester
     {
         [Test]
         public void doughnut_caching()
         {
-            var text1 = endpoints.Get<CachedEndpoints>(x => x.get_doughnut_cached()).ReadAsText();
-            var text2 = endpoints.Get<CachedEndpoints>(x => x.get_doughnut_cached()).ReadAsText();
-            var text3 = endpoints.Get<CachedEndpoints>(x => x.get_doughnut_cached()).ReadAsText();
-            var text4 = endpoints.Get<CachedEndpoints>(x => x.get_doughnut_cached()).ReadAsText();
+            using (var server = FubuApplication.DefaultPolicies().StructureMap(new Container()).RunEmbedded())
+            {
+                var endpoints = server.Endpoints;
 
-            text1.ShouldEqual(text2);
-            text1.ShouldEqual(text3);
-            text1.ShouldEqual(text4);
+                var text1 = endpoints.Get<CachedEndpoints>(x => x.get_doughnut_cached()).ReadAsText();
+                var text2 = endpoints.Get<CachedEndpoints>(x => x.get_doughnut_cached()).ReadAsText();
+                var text3 = endpoints.Get<CachedEndpoints>(x => x.get_doughnut_cached()).ReadAsText();
+                var text4 = endpoints.Get<CachedEndpoints>(x => x.get_doughnut_cached()).ReadAsText();
+
+                text1.ShouldEqual(text2);
+                text1.ShouldEqual(text3);
+                text1.ShouldEqual(text4);
+            }
         }
     }
 
@@ -73,16 +81,5 @@ namespace FubuMVC.Core.UI.Testing.Integration
 
     public class DateRequest{}
 
-    public class SharedHarnessContext
-    {
-        protected EndpointDriver endpoints
-        {
-            get
-            {
-                UrlContext.Stub(SelfHostHarness.Root);
 
-                return SelfHostHarness.Endpoints;
-            }
-        }
-    }
 }

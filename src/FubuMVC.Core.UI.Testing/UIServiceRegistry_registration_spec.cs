@@ -24,14 +24,6 @@ namespace FubuMVC.Core.UI.Testing
         }
 
         [Test]
-        public void an_activator_for_HtmlConventionActivator_is_registered()
-        {
-            buildGraph().Services.ServicesFor<IActivator>()
-                .Any(x => x.Type == typeof (HtmlConventionsActivator)).ShouldBeTrue();
-        }
-
-
-        [Test]
         public void registers_the_display_conversion_registry_activator()
         {
             buildGraph().Services.ServicesFor(typeof(IActivator))

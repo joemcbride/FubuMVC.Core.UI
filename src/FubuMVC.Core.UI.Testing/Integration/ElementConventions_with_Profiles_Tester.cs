@@ -6,25 +6,30 @@ using FubuMVC.TestingHarness;
 using FubuTestingSupport;
 using HtmlTags;
 using NUnit.Framework;
+using FubuMVC.StructureMap;
+using StructureMap;
+using FubuMVC.Katana;
 
 namespace FubuMVC.Core.UI.Testing.Integration
 {
     [TestFixture]
-    public class ElementConventions_with_Profiles_Tester : FubuRegistryHarness
+    public class ElementConventions_with_Profiles_Tester
     {
-        protected override void configure(FubuRegistry registry)
+        public class TestRegistry : FubuRegistry
         {
-            registry.Import<ProfiledHtmlConventions>();
-            registry.Actions.IncludeType<ProfiledEndpoint>();
+            public TestRegistry()
+            {
+                Import<ProfiledHtmlConventions>();
+                Actions.IncludeType<ProfiledEndpoint>();
 
-            registry.AlterSettings<ViewEngines>(x => {
-                x.IfTheViewMatches(v => v.Name().Contains("Profile")).SetTagProfileTo("foo");
-            });
-
-            // This wouldn't be necessary in most circumstances, but since this application
-            // and registry is really built by FubuMVC.TestingHarness, we need to add the assembly
-            //registry.Applies.ToAssemblyContainingType<ProfiledEndpoint>();
+                AlterSettings<ViewEngines>(x =>
+                {
+                    x.IfTheViewMatches(v => v.Name().Contains("Profile")).SetTagProfileTo("foo");
+                });
+            }
         }
+
+
 
         [Test]
         public void get_profiled_display()
@@ -34,8 +39,11 @@ namespace FubuMVC.Core.UI.Testing.Integration
                 return doc.DisplayFor(x => x.Name);
             };
 
-            endpoints.Get<ProfiledEndpoint>(x => x.get_profiled_page()).ReadAsText()
-                .ShouldContain("<div class=\"foo\">Jeremy</div>");
+            using (var server = FubuApplication.For<TestRegistry>().StructureMap(new Container()).RunEmbedded())
+            {
+                server.Endpoints.Get<ProfiledEndpoint>(x => x.get_profiled_page()).ReadAsText()
+                    .ShouldContain("<div class=\"foo\">Jeremy</div>");
+            }
         }
     }
 
