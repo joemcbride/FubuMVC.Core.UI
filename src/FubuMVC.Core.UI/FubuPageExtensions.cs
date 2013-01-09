@@ -64,7 +64,7 @@ namespace FubuMVC.Core.UI
                 return new HtmlTag("a").Authorized(false);
             }
 
-            return page.AuthorizedLinkTo(x => x.EndpointFor(inputModel));
+            return page.AuthorizedLinkTo(x => x.EndpointFor(inputModel, "GET"));
         }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace FubuMVC.Core.UI
         /// <returns></returns>
         public static HtmlTag LinkTo<TController>(this IFubuPage page, Expression<Action<TController>> actionExpression)
         {
-            return page.AuthorizedLinkTo(x => x.EndpointFor(actionExpression));
+            return page.AuthorizedLinkTo(x => x.EndpointFor(actionExpression, "GET"));
         }
 
         /// <summary>
