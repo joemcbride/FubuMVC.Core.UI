@@ -1,19 +1,15 @@
 ﻿using System;
+using FubuCore;
 using FubuCore.Reflection;
-using FubuMVC.Core.Endpoints;
 using FubuMVC.Core.UI.Elements;
 using FubuMVC.Core.UI.Forms;
 using FubuMVC.Core.UI.Security;
-using FubuMVC.TestingHarness;
+using FubuMVC.Katana;
+using FubuMVC.StructureMap;
+using FubuTestingSupport;
 using HtmlTags.Conventions;
 using NUnit.Framework;
-using FubuTestingSupport;
-using FubuCore.Reflection;
-using FubuTestingSupport;
-using FubuCore;
-using FubuMVC.StructureMap;
 using StructureMap;
-using FubuMVC.Katana;
 
 namespace FubuMVC.Core.UI.Testing.Integration
 {
@@ -26,49 +22,8 @@ namespace FubuMVC.Core.UI.Testing.Integration
             {
                 Services(x => x.AddService<IFieldAccessRule, ShowEditFakePolicy>());
                 Actions.IncludeType<ShowEditEndpoints>();
-                Import<HtmlConventionRegistry>(x =>
-                {
-                    x.Profile("table", profile => profile.FieldChrome<TableRowFieldChrome>());
-                });
-            }
-        }
-
-        [Test]
-        public void simplest_example_of_show()
-        {
-            var container = new Container();
-            using (var server = FubuApplication.For<TestRegistry>().StructureMap(container).RunEmbedded())
-            {
-                container.Inject<IFieldAccessRule>(new ShowEditFakePolicy { Logic = r => AccessRight.All });
-
-                server.Endpoints.GetByInput(new ShowModel {Name = "Jeremy"})
-                .ToString().ShouldEqual("<dt><label for=\"Name\">Name</label></dt>\n<dd><span id=\"Name\">Jeremy</span></dd>");
-            }
-        }
-
-        [Test]
-        public void show_is_still_visible_if_access_is_read_only()
-        {
-            var container = new Container();
-            using (var server = FubuApplication.For<TestRegistry>().StructureMap(container).RunEmbedded())
-            {
-                container.Inject<IFieldAccessRule>(new ShowEditFakePolicy { Logic = r => AccessRight.ReadOnly });
-
-                server.Endpoints.GetByInput(new ShowModel { Name = "Jeremy" })
-                .ToString().ShouldEqual("<dt><label for=\"Name\">Name</label></dt>\n<dd><span id=\"Name\">Jeremy</span></dd>");
-            }
-        }
-
-        [Test]
-        public void simplest_example_of_edit()
-        {
-            var container = new Container();
-            using (var server = FubuApplication.For<TestRegistry>().StructureMap(container).RunEmbedded())
-            {
-                container.Inject<IFieldAccessRule>(new ShowEditFakePolicy { Logic = r => AccessRight.All });
-
-                server.Endpoints.GetByInput(new EditModel { Name = "Jeremy" })
-                .ToString().ShouldEqual("<dt><label for=\"Name\">Name</label></dt>\n<dd><input type=\"text\" value=\"Jeremy\" name=\"Name\" /></dd>");
+                Import<HtmlConventionRegistry>(
+                    x => { x.Profile("table", profile => profile.FieldChrome<TableRowFieldChrome>()); });
             }
         }
 
@@ -76,12 +31,15 @@ namespace FubuMVC.Core.UI.Testing.Integration
         public void edit_downgrades_to_show_when_the_access_rights_make_it_so()
         {
             var container = new Container();
-            using (var server = FubuApplication.For<TestRegistry>().StructureMap(container).RunEmbedded())
+            using (
+                EmbeddedFubuMvcServer server = FubuApplication.For<TestRegistry>().StructureMap(container).RunEmbedded()
+                )
             {
-                container.Inject<IFieldAccessRule>(new ShowEditFakePolicy { Logic = r => AccessRight.ReadOnly });
+                container.Inject<IFieldAccessRule>(new ShowEditFakePolicy {Logic = r => AccessRight.ReadOnly});
 
-                server.Endpoints.GetByInput(new EditModel { Name = "Jeremy" })
-                .ToString().ShouldEqual("<dt><label for=\"Name\">Name</label></dt>\n<dd><span id=\"Name\">Jeremy</span></dd>");
+                server.Endpoints.GetByInput(new EditModel {Name = "Jeremy"})
+                      .ToString()
+                      .ShouldEqual("<dt><label for=\"Name\">Name</label></dt>\n<dd><span id=\"Name\">Jeremy</span></dd>");
             }
         }
 
@@ -89,36 +47,13 @@ namespace FubuMVC.Core.UI.Testing.Integration
         public void edit_shows_nothing_with_no_access_rights()
         {
             var container = new Container();
-            using (var server = FubuApplication.For<TestRegistry>().StructureMap(container).RunEmbedded())
+            using (
+                EmbeddedFubuMvcServer server = FubuApplication.For<TestRegistry>().StructureMap(container).RunEmbedded()
+                )
             {
-                container.Inject<IFieldAccessRule>(new ShowEditFakePolicy { Logic = r => AccessRight.None });
+                container.Inject<IFieldAccessRule>(new ShowEditFakePolicy {Logic = r => AccessRight.None});
 
                 server.Endpoints.GetByInput(new EditModel {Name = "Jeremy"}).ReadAsText().ShouldBeEmpty();
-            }
-        }
-
-        [Test]
-        public void show_downgrades_to_none_if_the_security_ixnays_it()
-        {
-            var container = new Container();
-            using (var server = FubuApplication.For<TestRegistry>().StructureMap(container).RunEmbedded())
-            {
-                container.Inject<IFieldAccessRule>(new ShowEditFakePolicy { Logic = r => AccessRight.None });
-
-                server.Endpoints.GetByInput(new ShowModel { Name = "Jeremy" }).ReadAsText().ShouldBeEmpty();
-            }
-        }
-
-        [Test]
-        public void security_rule_does_use_the_request_model()
-        {
-            var container = new Container();
-            using (var server = FubuApplication.For<TestRegistry>().StructureMap(container).RunEmbedded())
-            {
-                container.Inject<IFieldAccessRule>(new ShowEditFakePolicy { Logic = r => r.Model.As<ShowModel>().Level < 10 ? AccessRight.All : AccessRight.None });
-
-                server.Endpoints.GetByInput(new EditModel { Name = "Jeremy", Level = 15}).ReadAsText().ShouldBeEmpty();
-                server.Endpoints.GetByInput(new EditModel { Name = "Jeremy", Level = 5}).ReadAsText().ShouldNotBeEmpty();
             }
         }
 
@@ -126,12 +61,97 @@ namespace FubuMVC.Core.UI.Testing.Integration
         public void field_chrome_is_served_up_by_profile()
         {
             var container = new Container();
-            using (var server = FubuApplication.For<TestRegistry>().StructureMap(container).RunEmbedded())
+            using (
+                EmbeddedFubuMvcServer server = FubuApplication.For<TestRegistry>().StructureMap(container).RunEmbedded()
+                )
             {
-                container.Inject<IFieldAccessRule>(new ShowEditFakePolicy { Logic = r => AccessRight.All });
+                container.Inject<IFieldAccessRule>(new ShowEditFakePolicy {Logic = r => AccessRight.All});
 
-                server.Endpoints.GetByInput(new ProfileModel { Name = "Jeremy" })
-                .ToString().ShouldEqual("<tr><td><label for=\"Name\">Name</label></td><td><span id=\"Name\">Jeremy</span></td></tr>");
+                server.Endpoints.GetByInput(new ProfileModel {Name = "Jeremy"})
+                      .ToString()
+                      .ShouldEqual(
+                          "<tr><td><label for=\"Name\">Name</label></td><td><span id=\"Name\">Jeremy</span></td></tr>");
+            }
+        }
+
+        [Test]
+        public void security_rule_does_use_the_request_model()
+        {
+            var container = new Container();
+            using (
+                EmbeddedFubuMvcServer server = FubuApplication.For<TestRegistry>().StructureMap(container).RunEmbedded()
+                )
+            {
+                container.Inject<IFieldAccessRule>(new ShowEditFakePolicy
+                {
+                    Logic = r => r.Model.As<ShowModel>().Level < 10 ? AccessRight.All : AccessRight.None
+                });
+
+                server.Endpoints.GetByInput(new EditModel {Name = "Jeremy", Level = 15}).ReadAsText().ShouldBeEmpty();
+                server.Endpoints.GetByInput(new EditModel {Name = "Jeremy", Level = 5}).ReadAsText().ShouldNotBeEmpty();
+            }
+        }
+
+        [Test]
+        public void show_downgrades_to_none_if_the_security_ixnays_it()
+        {
+            var container = new Container();
+            using (
+                EmbeddedFubuMvcServer server = FubuApplication.For<TestRegistry>().StructureMap(container).RunEmbedded()
+                )
+            {
+                container.Inject<IFieldAccessRule>(new ShowEditFakePolicy {Logic = r => AccessRight.None});
+
+                server.Endpoints.GetByInput(new ShowModel {Name = "Jeremy"}).ReadAsText().ShouldBeEmpty();
+            }
+        }
+
+        [Test]
+        public void show_is_still_visible_if_access_is_read_only()
+        {
+            var container = new Container();
+            using (
+                EmbeddedFubuMvcServer server = FubuApplication.For<TestRegistry>().StructureMap(container).RunEmbedded()
+                )
+            {
+                container.Inject<IFieldAccessRule>(new ShowEditFakePolicy {Logic = r => AccessRight.ReadOnly});
+
+                server.Endpoints.GetByInput(new ShowModel {Name = "Jeremy"})
+                      .ToString()
+                      .ShouldEqual("<dt><label for=\"Name\">Name</label></dt>\n<dd><span id=\"Name\">Jeremy</span></dd>");
+            }
+        }
+
+        [Test]
+        public void simplest_example_of_edit()
+        {
+            var container = new Container();
+            using (
+                EmbeddedFubuMvcServer server = FubuApplication.For<TestRegistry>().StructureMap(container).RunEmbedded()
+                )
+            {
+                container.Inject<IFieldAccessRule>(new ShowEditFakePolicy {Logic = r => AccessRight.All});
+
+                server.Endpoints.GetByInput(new EditModel {Name = "Jeremy"})
+                      .ToString()
+                      .ShouldEqual(
+                          "<dt><label for=\"Name\">Name</label></dt>\n<dd><input type=\"text\" value=\"Jeremy\" name=\"Name\" /></dd>");
+            }
+        }
+
+        [Test]
+        public void simplest_example_of_show()
+        {
+            var container = new Container();
+            using (
+                EmbeddedFubuMvcServer server = FubuApplication.For<TestRegistry>().StructureMap(container).RunEmbedded()
+                )
+            {
+                container.Inject<IFieldAccessRule>(new ShowEditFakePolicy {Logic = r => AccessRight.All});
+
+                server.Endpoints.GetByInput(new ShowModel {Name = "Jeremy"})
+                      .ToString()
+                      .ShouldEqual("<dt><label for=\"Name\">Name</label></dt>\n<dd><span id=\"Name\">Jeremy</span></dd>");
             }
         }
     }
@@ -161,7 +181,6 @@ namespace FubuMVC.Core.UI.Testing.Integration
             _document.Model = model;
 
             return _document.Show(x => x.Name).ToString();
-
         }
 
         public string get_edit_Name_Level(EditModel model)
@@ -174,12 +193,11 @@ namespace FubuMVC.Core.UI.Testing.Integration
 
     public class ProfileModel : ShowModel
     {
-        
     }
 
     public class ShowEditFakePolicy : IFieldAccessRule
     {
-        public Func<ElementRequest, AccessRight> Logic = r => AccessRight.All; 
+        public Func<ElementRequest, AccessRight> Logic = r => AccessRight.All;
 
         public AccessRight RightsFor(ElementRequest request)
         {
@@ -188,7 +206,7 @@ namespace FubuMVC.Core.UI.Testing.Integration
 
         public bool Matches(Accessor accessor)
         {
-            return accessor.OwnerType.CanBeCastTo(typeof(ShowModel));
+            return accessor.OwnerType.CanBeCastTo(typeof (ShowModel));
         }
 
         public FieldAccessCategory Category { get; private set; }
@@ -197,7 +215,6 @@ namespace FubuMVC.Core.UI.Testing.Integration
 
     public class ShowModel
     {
-
         public string Name { get; set; }
 
         public int Level { get; set; }
@@ -205,6 +222,5 @@ namespace FubuMVC.Core.UI.Testing.Integration
 
     public class EditModel : ShowModel
     {
-        
     }
 }
