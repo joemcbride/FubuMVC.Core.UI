@@ -4,6 +4,7 @@ using FubuCore;
 using FubuCore.Conversion;
 using FubuCore.Reflection;
 using FubuLocalization;
+using FubuMVC.Core.Ajax;
 using FubuMVC.Core.Security;
 using FubuMVC.Core.UI.Elements;
 using FubuMVC.Core.View;
@@ -220,6 +221,11 @@ namespace FubuMVC.Core.UI.Testing.Integration
         public string get_input_Name(InputWithPattern pattern)
         {
             return "Hello";
+        }
+
+        public AjaxContinuation post_input_Name(InputWithPattern patter)
+        {
+            return AjaxContinuation.Successful();
         }
 
         [AllowRole("Role1")]

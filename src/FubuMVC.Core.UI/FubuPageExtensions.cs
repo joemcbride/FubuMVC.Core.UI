@@ -99,10 +99,11 @@ namespace FubuMVC.Core.UI
         /// <param name="page"></param>
         /// <param name="variable"></param>
         /// <param name="input"></param>
+        /// <param name="categoryOrHttpMethod">Default is "GET"</param>
         /// <returns></returns>
-        public static string LinkVariable(this IFubuPage page, string variable, object input)
+        public static string LinkVariable(this IFubuPage page, string variable, object input, string categoryOrHttpMethod = "GET")
         {
-            string url = page.Urls.UrlFor(input);
+            string url = page.Urls.UrlFor(input, categoryOrHttpMethod);
             return "var {0} = '{1}';".ToFormat(variable, url);
         }
 
@@ -114,9 +115,9 @@ namespace FubuMVC.Core.UI
         /// <param name="page"></param>
         /// <param name="variable"></param>
         /// <returns></returns>
-        public static string LinkVariable<TInput>(this IFubuPage page, string variable) where TInput : new()
+        public static string LinkVariable<TInput>(this IFubuPage page, string variable, string categoryOrHttpMethod = "GET") where TInput : new()
         {
-            return page.LinkVariable(variable, new TInput());
+            return page.LinkVariable(variable, new TInput(), categoryOrHttpMethod);
         }
 
 
