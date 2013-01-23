@@ -11,7 +11,9 @@ namespace FubuMVC.Core.UI.Elements
 
         public override void Activate(ElementRequest request)
         {
-            request.ElementId = _naming.GetName(request.HolderType(), request.Accessor);
+            request.ElementId = string.IsNullOrEmpty(request.ElementId)
+                ? _naming.GetName(request.HolderType(), request.Accessor)
+                : request.ElementId;
         }
     }
 }
