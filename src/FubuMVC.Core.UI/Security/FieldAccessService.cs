@@ -31,8 +31,6 @@ namespace FubuMVC.Core.UI.Security
 
         public AccessRight RightsFor(object target, PropertyInfo property)
         {
-            if (target == null) throw new ArgumentNullException("target");
-
             var accessor = new SingleProperty(property, _types.ResolveType(target));
 
             var request = new ElementRequest(accessor){
