@@ -14,5 +14,6 @@ namespace FubuMVC.Core.UI.Elements
         HtmlTag LabelFor(ElementRequest request, string profile = null, T model = null);
         HtmlTag InputFor(ElementRequest request, string profile = null, T model = null);
         HtmlTag DisplayFor(ElementRequest request, string profile = null, T model = null);
+        ElementRequest GetRequest(Expression<Func<T, object>> expression, T model = null);
     }
 }

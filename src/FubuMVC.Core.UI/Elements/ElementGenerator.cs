@@ -12,15 +12,17 @@ namespace FubuMVC.Core.UI.Elements
     public class ElementGenerator<T> : IElementGenerator<T> where T : class
     {
         private readonly ITagGenerator<ElementRequest> _tags;
+        private readonly ITagRequestBuilder _requestBuilder;
         private Lazy<T> _model;
 
-        public ElementGenerator(ITagGeneratorFactory factory, IFubuRequest request) : this(factory.GeneratorFor<ElementRequest>(), request)
+        public ElementGenerator(ITagGeneratorFactory factory, IFubuRequest request, ITagRequestBuilder requestBuilder) : this(factory.GeneratorFor<ElementRequest>(), request, requestBuilder)
         {
         }
 
-        private ElementGenerator(ITagGenerator<ElementRequest> tags, IFubuRequest request)
+        private ElementGenerator(ITagGenerator<ElementRequest> tags, IFubuRequest request, ITagRequestBuilder requestBuilder)
         {
             _tags = tags;
+            _requestBuilder = requestBuilder;
             _model = new Lazy<T>(() => {
                 return request.Get<T>();
             });
@@ -37,7 +39,7 @@ namespace FubuMVC.Core.UI.Elements
             var tags = new TagGenerator<ElementRequest>(library.For<ElementRequest>(),
                                                         activators ?? new ITagRequestActivator[0], new ActiveProfile());
 
-            return new ElementGenerator<T>(tags, new InMemoryFubuRequest());
+            return new ElementGenerator<T>(tags, new InMemoryFubuRequest(), new TagRequestBuilder(new ITagRequestActivator[0]));
         } 
 
         public HtmlTag LabelFor(Expression<Func<T, object>> expression, string profile = null, T model = null)
@@ -63,10 +65,14 @@ namespace FubuMVC.Core.UI.Elements
 
         public ElementRequest GetRequest(Expression<Func<T, object>> expression, T model = null)
         {
-            return new ElementRequest(expression.ToAccessor())
+            var request = new ElementRequest(expression.ToAccessor())
             {
                 Model = model ?? Model
             };
+
+            _requestBuilder.Build(request);
+
+            return request;
         }
 
         private HtmlTag build(Expression<Func<T, object>> expression, string category, string profile = null, T model = null)

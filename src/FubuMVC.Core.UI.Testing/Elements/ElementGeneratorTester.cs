@@ -26,6 +26,15 @@ namespace FubuMVC.Core.UI.Testing.Elements
             Services.Inject<ITagGenerator<ElementRequest>>(new AddressTagGenerator());
 
             MockFor<ITagGeneratorFactory>().Stub(x => x.GeneratorFor<ElementRequest>()).Return(new AddressTagGenerator());
+
+        }
+
+        [Test]
+        public void ensure_element_requests_are_built()
+        {
+            ClassUnderTest.GetRequest(x => x.Address1, theAddress);
+
+            MockFor<ITagRequestBuilder>().AssertWasCalled(x => x.Build(new ElementRequest(null)), ctx => ctx.IgnoreArguments());
         }
 
         [Test]

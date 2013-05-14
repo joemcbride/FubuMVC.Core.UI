@@ -319,6 +319,11 @@ namespace FubuMVC.Tests.UI.Forms
             return new HtmlTag("span").AddClass("display").Text(request.Accessor.Name);
         }
 
+        public ElementRequest GetRequest(Expression<Func<T, object>> expression, T model = null)
+        {
+            return new ElementRequest(null);
+        }
+
         public T Model { get; set; }
         public IFieldChrome Chrome()
         {
