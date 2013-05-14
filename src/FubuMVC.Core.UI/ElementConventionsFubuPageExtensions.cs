@@ -24,7 +24,7 @@ namespace FubuMVC.Core.UI
         public static HtmlTag InputFor<T>(this IFubuPage<T> page, Expression<Func<T, object>> expression)
             where T : class
         {
-            return page.Tags().InputFor(expression);
+            return page.Tags().InputFor(expression, model: page.Model);
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace FubuMVC.Core.UI
         public static HtmlTag LabelFor<T>(this IFubuPage<T> page, Expression<Func<T, object>> expression)
             where T : class
         {
-            return page.Get<IElementGenerator<T>>().LabelFor(expression);
+            return page.Get<IElementGenerator<T>>().LabelFor(expression, model:page.Model);
         }
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace FubuMVC.Core.UI
         public static HtmlTag DisplayFor<T>(this IFubuPage<T> page, Expression<Func<T, object>> expression)
             where T : class
         {
-            return page.Get<IElementGenerator<T>>().DisplayFor(expression);
+            return page.Get<IElementGenerator<T>>().DisplayFor(expression, model: page.Model);
         }
 
         /// <summary>
