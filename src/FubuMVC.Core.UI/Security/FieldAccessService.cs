@@ -5,6 +5,7 @@ using System.Reflection;
 using FubuCore;
 using FubuCore.Reflection;
 using FubuMVC.Core.UI.Elements;
+using HtmlTags.Conventions;
 
 namespace FubuMVC.Core.UI.Security
 {
@@ -12,12 +13,15 @@ namespace FubuMVC.Core.UI.Security
     {
         private readonly IFieldAccessRightsExecutor _accessRightsExecutor;
         private readonly ITypeResolver _types;
+        private readonly ITagRequestBuilder _tagRequestBuilder;
         private readonly List<IFieldAccessRule> _rules = new List<IFieldAccessRule>();
 
-        public FieldAccessService(IFieldAccessRightsExecutor accessRightsExecutor, IEnumerable<IFieldAccessRule> rules, ITypeResolver types)
+        public FieldAccessService(IFieldAccessRightsExecutor accessRightsExecutor, IEnumerable<IFieldAccessRule> rules, ITypeResolver types,
+            ITagRequestBuilder tagRequestBuilder)
         {
             _accessRightsExecutor = accessRightsExecutor;
             _types = types;
+            _tagRequestBuilder = tagRequestBuilder;
             _rules.AddRange(rules);
         }
 
@@ -36,6 +40,8 @@ namespace FubuMVC.Core.UI.Security
             var request = new ElementRequest(accessor){
                 Model = target
             };
+
+            _tagRequestBuilder.Build(request);
 
             return RightsFor(request);
         }

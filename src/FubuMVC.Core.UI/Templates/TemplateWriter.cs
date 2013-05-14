@@ -29,13 +29,10 @@ namespace FubuMVC.Core.UI.Templates
         private readonly HtmlConventionLibrary _library;
         private readonly IList<HtmlTag> _tags = new List<HtmlTag>();
 
-        public TemplateWriter(ActiveProfile profile, HtmlConventionLibrary library, IElementNamingConvention naming,
-                              IServiceLocator services)
+        public TemplateWriter(ActiveProfile profile, HtmlConventionLibrary library, ITagRequestBuilder tagRequestBuilder)
         {
             _library = library;
-            _activators = new ITagRequestActivator[]
-            {new ServiceLocatorTagRequestActivator(services), new ElementIdActivator(naming)};
-            var factory = new TagGeneratorFactory(profile, library, _activators);
+            var factory = new TagGeneratorFactory(profile, library, tagRequestBuilder);
             _elements = new Lazy<ITagGenerator<ElementRequest>>(factory.GeneratorFor<ElementRequest>);
         }
 

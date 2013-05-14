@@ -20,8 +20,11 @@ namespace FubuMVC.Core.UI.Testing.Templates
         {
             var library = new DefaultHtmlConventions().Library;
 
-            theTemplates = new TemplateWriter(new ActiveProfile(), library, new DefaultElementNamingConvention(),
-                                              new InMemoryServiceLocator());
+            var namingConventions = new DefaultElementNamingConvention();
+
+            var activators = new ElementIdActivator(namingConventions);
+
+            theTemplates = new TemplateWriter(new ActiveProfile(), library, new TagRequestBuilder(new []{activators}));
         }
 
         [Test]
@@ -86,8 +89,7 @@ namespace FubuMVC.Core.UI.Testing.Templates
         {
             var library = new DefaultHtmlConventions().Library;
 
-            theTemplates = new TemplateWriter(new ActiveProfile(), library, new DefaultElementNamingConvention(),
-                                              new InMemoryServiceLocator());
+            theTemplates = new TemplateWriter(new ActiveProfile(), library, new TagRequestBuilder(new ITagRequestActivator[0]));
 
             theTemplates.AddTemplate("foo", new HtmlTag("span").MustacheText("foo"));
             theTemplates.AddTemplate("bar", "some {{bar}} text");
