@@ -5,6 +5,7 @@ using FubuCore.Reflection;
 using FubuMVC.Core.UI.Elements;
 using FubuMVC.Core.UI.Security;
 using FubuTestingSupport;
+using HtmlTags.Conventions;
 using NUnit.Framework;
 using FubuCore;
 
@@ -25,7 +26,7 @@ namespace FubuMVC.Core.UI.Testing.Security
                 {Category = FieldAccessCategory.LogicCondition}
             };
 
-            _service = new FieldAccessService(new FieldAccessRightsExecutor(), rules, null);
+            _service = new FieldAccessService(new FieldAccessRightsExecutor(), rules, null, new TagRequestBuilder(new ITagRequestActivator[0]));
         }
 
         #endregion

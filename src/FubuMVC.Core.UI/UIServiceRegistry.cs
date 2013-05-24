@@ -30,6 +30,8 @@ namespace FubuMVC.Core.UI
             SetServiceIfNone<ITagGeneratorFactory, TagGeneratorFactory>();
 
             SetServiceIfNone<ITemplateWriter, TemplateWriter>();
+            
+            SetServiceIfNone<ITagRequestBuilder, TagRequestBuilder>();
         }
     }
 }
