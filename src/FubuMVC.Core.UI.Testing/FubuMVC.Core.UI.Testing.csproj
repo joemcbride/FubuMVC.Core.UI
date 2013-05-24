@@ -147,6 +147,7 @@
     <Compile Include="Integration\can_override_the_field_chrome_bug.cs" />
     <Compile Include="Integration\doughnut_caching_tester.cs" />
     <Compile Include="Integration\ElementConventionsFubuPageExtensions_FullStackTester_DefaultConventions.cs" />
+    <Compile Include="Integration\ElementConventions_for_Partials_in_Loop_Tester.cs" />
     <Compile Include="Integration\ElementConventions_with_Profiles_Tester.cs" />
     <Compile Include="Integration\Explicit_accessor_overrides_integration_tester.cs" />
     <Compile Include="Integration\FormRequestConventionsIntegrationTester.cs" />

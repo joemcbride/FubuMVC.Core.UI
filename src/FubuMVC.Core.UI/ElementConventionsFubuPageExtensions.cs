@@ -24,7 +24,7 @@ namespace FubuMVC.Core.UI
         public static HtmlTag InputFor<T>(this IFubuPage<T> page, Expression<Func<T, object>> expression)
             where T : class
         {
-            return page.Tags().InputFor(expression);
+            return page.Tags().InputFor(expression, model: page.Model);
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace FubuMVC.Core.UI
         public static HtmlTag LabelFor<T>(this IFubuPage<T> page, Expression<Func<T, object>> expression)
             where T : class
         {
-            return page.Get<IElementGenerator<T>>().LabelFor(expression);
+            return page.Get<IElementGenerator<T>>().LabelFor(expression, model:page.Model);
         }
 
         /// <summary>
@@ -79,6 +79,21 @@ namespace FubuMVC.Core.UI
             return page.Get<IElementGenerator<T>>().LabelFor(expression);
         }
 
+
+        /// <summary>
+        ///   Builds a tag that displays the name of a property on a model retrieved from the <see cref = "IFubuRequest" />
+        /// </summary>
+        /// <typeparam name = "T">The type to retrieve from the request</typeparam>
+        /// <param name = "page">The view</param>
+        /// <param name = "model">The model used to provide values for the tag</param>
+        /// <param name = "expression">An expression that specifies a property on the retrieved type instance</param>
+        /// <returns></returns>
+        public static HtmlTag LabelFor<T>(this IFubuPage page, T model, Expression<Func<T, object>> expression)
+           where T : class
+        {
+            return page.Get<IElementGenerator<T>>().LabelFor(expression, model: model);
+        }
+
         /// <summary>
         ///   Builds a tag that displays the current value of a property on the page's view model
         /// </summary>
@@ -89,7 +104,7 @@ namespace FubuMVC.Core.UI
         public static HtmlTag DisplayFor<T>(this IFubuPage<T> page, Expression<Func<T, object>> expression)
             where T : class
         {
-            return page.Get<IElementGenerator<T>>().DisplayFor(expression);
+            return page.Get<IElementGenerator<T>>().DisplayFor(expression, model: page.Model);
         }
 
         /// <summary>
