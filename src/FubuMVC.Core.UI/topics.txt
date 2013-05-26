@@ -1,0 +1,41 @@
+﻿
+/conventions=Html Conventions
+
+  /fields=Property Element Conventions
+  labels=LabelFor
+  inputs=InputFor
+  displays=DisplayFor
+
+  /forms=Forms
+    /formconventions=Form Element Conventions
+	chrome=Show and Edit Fields
+    fieldchrome=Creating Custom Field Chrome Layouts
+
+
+  /defaults=Default Conventions
+
+  /configuration=Configuring Html Conventions
+    builders=Element Builders
+    modifiers=Element Modifiers
+    registries=Using HtmlConventionRegistry's
+    naming=Element Naming Conventions
+    services=Using IoC Services
+  unittesting=Unit Testing Html Conventions
+  /templates=Using Html Conventions for client side templates
+
+
+
+/authorization=Authorization
+  extensions=HtmlTag Extensions for Authorization
+  accessrights=Access Rights
+  service=IFieldAccessService
+  rules=Custom Field Access Rules
+
+
+
+/viewengine=Using HtmlTags as a View Engine
+  /htmldocument=Full Html Pages
+
+/links=Link Helpers
+/forms=Form Helpers
+/htmltags=HtmlTag Extensions
