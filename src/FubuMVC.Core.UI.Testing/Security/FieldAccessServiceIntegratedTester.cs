@@ -19,24 +19,38 @@ namespace FubuMVC.Core.UI.Testing.Security
         [SetUp]
         public void SetUp()
         {
+            jNameRule = new JNameRule {Category = FieldAccessCategory.Authorization};
             var rules = new List<IFieldAccessRule>
             {
-                new JNameRule {Category = FieldAccessCategory.Authorization},
+                jNameRule,
                 new LimiterRule<PersonModel>(person => person.Age > 30, AccessRight.ReadOnly)
                 {Category = FieldAccessCategory.LogicCondition}
             };
 
-            _service = new FieldAccessService(new FieldAccessRightsExecutor(), rules, null, new TagRequestBuilder(new ITagRequestActivator[0]));
+            var services = new InMemoryServiceLocator();
+            services.Add(new JNameRule());
+
+            _service = new FieldAccessService(new FieldAccessRightsExecutor(), rules, null, services);
         }
 
         #endregion
 
         private FieldAccessService _service;
+        private JNameRule jNameRule;
 
         private AccessRight RightsFor<T>(T model, Expression<Func<T, object>> expression)
         {
             ElementRequest request = ElementRequest.For(model, expression);
             return _service.RightsFor(request);
+        }
+
+        [Test]
+        public void puts_the_service_locator_on_the_request()
+        {
+            RightsFor(new PersonModel {Name = "Jeremy"}, x => x.Name);
+
+            // measuring this against a side effect
+            jNameRule.LastRequest.Get<JNameRule>().ShouldNotBeNull();
         }
 
         [Test]
@@ -64,11 +78,16 @@ namespace FubuMVC.Core.UI.Testing.Security
 
     public class JNameRule : IFieldAccessRule
     {
+        public ElementRequest LastRequest;
+
         #region IFieldAccessRule Members
 
         public AccessRight RightsFor(ElementRequest request)
         {
+            LastRequest = request;
             if (request.Value<string>().StartsWith("J")) return AccessRight.All;
+
+            
 
             return AccessRight.ReadOnly;
         }

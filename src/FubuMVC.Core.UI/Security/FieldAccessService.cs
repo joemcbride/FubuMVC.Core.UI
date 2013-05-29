@@ -13,20 +13,21 @@ namespace FubuMVC.Core.UI.Security
     {
         private readonly IFieldAccessRightsExecutor _accessRightsExecutor;
         private readonly ITypeResolver _types;
-        private readonly ITagRequestBuilder _tagRequestBuilder;
+        private readonly IServiceLocator _services;
         private readonly List<IFieldAccessRule> _rules = new List<IFieldAccessRule>();
 
-        public FieldAccessService(IFieldAccessRightsExecutor accessRightsExecutor, IEnumerable<IFieldAccessRule> rules, ITypeResolver types,
-            ITagRequestBuilder tagRequestBuilder)
+        public FieldAccessService(IFieldAccessRightsExecutor accessRightsExecutor, IEnumerable<IFieldAccessRule> rules, ITypeResolver types, IServiceLocator services)
         {
             _accessRightsExecutor = accessRightsExecutor;
             _types = types;
-            _tagRequestBuilder = tagRequestBuilder;
+            _services = services;
             _rules.AddRange(rules);
         }
 
         public AccessRight RightsFor(ElementRequest request)
         {
+            attachServices(request);
+
             var matchingRules = _rules.Where(x => x.Matches(request.Accessor));
             var authorizationRules = matchingRules.Where(x => x.Category == FieldAccessCategory.Authorization);
             var logicRules = matchingRules.Where(x => x.Category == FieldAccessCategory.LogicCondition);
@@ -38,12 +39,18 @@ namespace FubuMVC.Core.UI.Security
             var accessor = new SingleProperty(property, _types.ResolveType(target));
 
             var request = new ElementRequest(accessor){
-                Model = target
+                Model = target,
+
             };
 
-            _tagRequestBuilder.Build(request);
+            attachServices(request);
 
             return RightsFor(request);
+        }
+
+        private void attachServices(ElementRequest request)
+        {
+            request.As<IServiceLocatorAware>().Attach(_services);
         }
     }
 }
