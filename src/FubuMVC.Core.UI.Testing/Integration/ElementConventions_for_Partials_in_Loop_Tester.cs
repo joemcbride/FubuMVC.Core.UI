@@ -22,21 +22,21 @@ namespace FubuMVC.Core.UI.Testing.Integration
          public void DisplayFor_in_partials_in_a_for_each_loop()
          {
              execute(page => page.DisplayFor(x => x.Name));
-             theResult.ShouldEqual("<span id=\"Name\">Item1</span>\r\n<span id=\"Name\">Item2</span>\r\n<span id=\"Name\">Item3</span>\r\n");
+             theResult.ShouldEqual("<span id=\"Name\">Item1</span><span id=\"Name\">Item2</span><span id=\"Name\">Item3</span>");
          }
 
         [Test]
         public void LabelFor_in_partials_in_a_for_each_loop()
         {
             execute(page => page.LabelFor(x => x.Name));
-            theResult.ShouldEqual("<label for=\"Name\">Name</label>\r\n<label for=\"Name\">Name</label>\r\n<label for=\"Name\">Name</label>\r\n");
+            theResult.ShouldEqual("<label for=\"Name\">Name</label><label for=\"Name\">Name</label><label for=\"Name\">Name</label>");
         }
 
         [Test]
         public void InputFor_in_partials_in_a_for_each_loop()
         {
             execute(page => page.InputFor(x => x.Name));
-            theResult.ShouldEqual("<input type=\"text\" value=\"Item1\" name=\"Name\" />\r\n<input type=\"text\" value=\"Item2\" name=\"Name\" />\r\n<input type=\"text\" value=\"Item3\" name=\"Name\" />\r\n");
+            theResult.ShouldEqual("<input type=\"text\" value=\"Item1\" name=\"Name\" /><input type=\"text\" value=\"Item2\" name=\"Name\" /><input type=\"text\" value=\"Item3\" name=\"Name\" />");
         }
     }
 
@@ -80,7 +80,7 @@ namespace FubuMVC.Core.UI.Testing.Integration
             var response = _server.Endpoints.Get<PartialConventionEndpoint>(x => x.get_multiplepartialresult());
             response.StatusCodeShouldBe(HttpStatusCode.OK);
 
-            theResult = response.ReadAsText();
+            theResult = response.ReadAsText().Replace("\n", "").Replace("\r", "");
         }
 
         public class PartialConventionEndpoint
