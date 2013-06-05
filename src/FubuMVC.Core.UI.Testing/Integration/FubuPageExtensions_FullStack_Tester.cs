@@ -38,7 +38,7 @@ namespace FubuMVC.Core.UI.Testing.Integration
                 return  page.AuthorizedLinkTo(svc => svc.EndpointFor<ConventionEndpoint>(x => x.get_authorized_data()));
             });
 
-            theResult.ShouldEqual("<a href=\"{0}/authorized/data\"></a>".ToFormat(BaseAddress));
+            theResult.ShouldEqual("<a href=\"/authorized/data\"></a>");
         }
 
         [Test]
@@ -58,14 +58,14 @@ namespace FubuMVC.Core.UI.Testing.Integration
         public void link_to_by_input_model_type()
         {
             execute(page => page.LinkTo<SpecificInput>());
-            theResult.ShouldEqual("<a href=\"{0}/specific/input\"></a>".ToFormat(BaseAddress));
+            theResult.ShouldEqual("<a href=\"/specific/input\"></a>");
         }
 
         [Test]
         public void link_to_by_input_model_gets_full_pattern()
         {
             execute(page => page.LinkTo(new InputWithPattern{Name = "Jeremy"}));
-            theResult.ShouldEqual("<a href=\"{0}/input/Jeremy\"></a>".ToFormat(BaseAddress));
+            theResult.ShouldEqual("<a href=\"/input/Jeremy\"></a>");
         }
 
         [Test]
@@ -77,7 +77,7 @@ namespace FubuMVC.Core.UI.Testing.Integration
                 return page.LinkTo(new SecuredInput {Name = "Max"});
             });
 
-            theResult.ShouldEqual("<a href=\"{0}/secured/by/role/Max\"></a>".ToFormat(BaseAddress));
+            theResult.ShouldEqual("<a href=\"/secured/by/role/Max\"></a>");
         }
 
         [Test]
@@ -98,7 +98,7 @@ namespace FubuMVC.Core.UI.Testing.Integration
         {
             execute(page => page.LinkTo<ConventionEndpoint>(x => x.get_result()));
 
-            theResult.ShouldEqual("<a href=\"{0}/result\"></a>".ToFormat(BaseAddress));
+            theResult.ShouldEqual("<a href=\"/result\"></a>");
         }
 
         [Test]
@@ -106,7 +106,7 @@ namespace FubuMVC.Core.UI.Testing.Integration
         {
             execute(page => page.LinkToNew<Foo>());
 
-            theResult.ShouldEqual("<a href=\"{0}/creates/foo\"></a>".ToFormat(BaseAddress));
+            theResult.ShouldEqual("<a href=\"/creates/foo\"></a>");
         }
 
         [Test]
@@ -114,7 +114,7 @@ namespace FubuMVC.Core.UI.Testing.Integration
         {
             execute(page => page.LinkVariable("foo", new InputWithPattern{Name = "Shiner"}));
 
-            theResult.ShouldEqual("var foo = '{0}/input/Shiner';".ToFormat(BaseAddress));
+            theResult.ShouldEqual("var foo = '/input/Shiner';");
         }
 
         [Test]
@@ -122,7 +122,7 @@ namespace FubuMVC.Core.UI.Testing.Integration
         {
             execute(page => page.LinkVariable<SpecificInput>("foo"));
 
-            theResult.ShouldEqual("var foo = '{0}/specific/input';".ToFormat(BaseAddress));
+            theResult.ShouldEqual("var foo = '/specific/input';");
         }
 
         [Test]
