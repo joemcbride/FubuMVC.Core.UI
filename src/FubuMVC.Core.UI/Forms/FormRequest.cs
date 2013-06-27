@@ -2,6 +2,7 @@
 using FubuMVC.Core.Http;
 using FubuMVC.Core.Registration.Nodes;
 using FubuMVC.Core.Registration.Querying;
+using FubuMVC.Core.Urls;
 using HtmlTags.Conventions;
 
 namespace FubuMVC.Core.UI.Forms
@@ -40,12 +41,12 @@ namespace FubuMVC.Core.UI.Forms
         {
             _services = locator;
             var resolver = locator.GetInstance<IChainResolver>();
-            var currentHttpRequest = locator.GetInstance<ICurrentHttpRequest>();
+	        var urlResolver = locator.GetInstance<IChainUrlResolver>();
             Chain = resolver.Find(Search);
 
             if (Chain == null)
             {
-                throw new FubuException(333, "No chain matches this search:  " + Search.ToString());
+                throw new FubuException(333, "No chain matches this search:  " + Search);
             }
 
             if (Chain.Route == null)
@@ -53,7 +54,7 @@ namespace FubuMVC.Core.UI.Forms
                 throw new FubuException(334, "Cannot post to this endpoint because there is no route");
             }
 
-            Url = currentHttpRequest.ToFullUrl(Chain.Route.CreateUrlFromInput(_input));
+	        Url = urlResolver.UrlFor(_input, Chain);
         }
 
         public IServiceLocator Services
