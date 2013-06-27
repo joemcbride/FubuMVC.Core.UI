@@ -1,9 +1,9 @@
 ﻿using FubuCore;
-using FubuMVC.Core.Http;
 using FubuMVC.Core.Registration.Nodes;
 using FubuMVC.Core.Registration.Querying;
 using FubuMVC.Core.Registration.Routes;
 using FubuMVC.Core.UI.Forms;
+using FubuMVC.Core.Urls;
 using FubuTestingSupport;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -19,7 +19,7 @@ namespace FubuMVC.Core.UI.Testing.Forms
         private object theInput;
 
         private IChainResolver theResolver;
-        private ICurrentHttpRequest theCurrentRequest;
+	    private IChainUrlResolver theUrlResolver;
         private BehaviorChain theChain;
 
         [SetUp]
@@ -30,12 +30,12 @@ namespace FubuMVC.Core.UI.Testing.Forms
             theInput = new object();
 
             theResolver = MockRepository.GenerateStub<IChainResolver>();
-            theCurrentRequest = MockRepository.GenerateStub<ICurrentHttpRequest>();
+            theUrlResolver = MockRepository.GenerateStub<IChainUrlResolver>();
 
             theChain = new BehaviorChain();
 
             theServices.Add(theResolver);
-            theServices.Add(theCurrentRequest);
+            theServices.Add(theUrlResolver);
 
             theRequest = new FormRequest(theSearch, theInput);
         }
@@ -64,10 +64,8 @@ namespace FubuMVC.Core.UI.Testing.Forms
             route.ApplyInputType(typeof(object));
             
             theChain.Route = route;
-
-            var url = theChain.Route.CreateUrlFromInput(theInput);
             
-            theCurrentRequest.Stub(x => x.ToFullUrl(url)).Return(fullUrl);
+            theUrlResolver.Stub(x => x.UrlFor(theInput, theChain)).Return(fullUrl);
             theResolver.Stub(x => x.Find(theSearch)).Return(theChain);
 
             theRequest.Attach(theServices);
